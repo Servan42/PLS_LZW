@@ -11,8 +11,11 @@
 typedef int Code;
 
 typedef struct{
+  int longueur;
   char *mot;
 }elem;
+
+int ind_dico;
 
 elem dico[MAX];
 
