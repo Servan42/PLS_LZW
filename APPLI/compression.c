@@ -1,3 +1,9 @@
+/**
+* @file compression.c
+* @brief Fichier contenant l'algorithme de compression.
+* @author CHARLOT Servan
+*/
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdint.h>
