@@ -1,7 +1,15 @@
 #ifndef DICTIONNAIRE_H
 #define DICTIONNAIRE_H
 
+#define MAX 5000;
+
 typedef int Code;
+
+typedef struct{
+  char *mot;
+}elem;
+
+elem dico[MAX];
 
 void initialiser();
 
