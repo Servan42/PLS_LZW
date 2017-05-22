@@ -1,0 +1,5 @@
+#ifndef DICTIONAIRE_H
+
+#define DICTIONAIRE_H
+
+#endif DICTIONAIRE_H
