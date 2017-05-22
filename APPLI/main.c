@@ -24,7 +24,7 @@ void lecture_fichier(char* nom_fichier, char *tab){
 
 int main(int argc, char *argv[]){
 
-	if(argc==2){
+	if(argc==3){
 		int taille;
 	 	printf("rentrez la taille du fichier en octet :\n");
 	 	scanf("%d", &taille);
