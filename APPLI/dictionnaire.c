@@ -59,9 +59,9 @@ Code Inserer(Code prefixe,Code mono){
 */
 
 uint8_t *CodeVersChaine (Code code, int *longueur){
-  int lg = *longueur;
   uint8_t *val;
   val = dico[code].mot;
+  *longueur = dico[code].longueur;
   return val;
 }
 
