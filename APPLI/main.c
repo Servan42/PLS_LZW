@@ -6,13 +6,18 @@ void lecture_fichier(char* nom_fichier, char *tab){
  	FILE *fichier;
 
  	int i = 0;
+ 	char c;
 	fichier = fopen(nom_fichier, "r");
 	if (fichier != NULL) {
 		while (!feof(fichier)) {
-			tab[i]=fgetc(fichier);
-			printf("%c | %i \n", tab[i], tab[i]);
-			i++;
+			c=fgetc(fichier);
+			// printf("%c | %i \n", tab[i], tab[i]);
+			if((int) c != -1 && (int) c != 10){
+				tab[i] = c;
+				i++;
+			}
 		}
+		// printf("taille : %d\n", i);
 	}
 	fclose(fichier);
 }
@@ -32,7 +37,7 @@ int main(int argc, char *argv[]){
 
 	}
 	else{
-		printf("Manque le fichier en argument !\n");
+		printf("Il faut 2 fichiers en paramètres\n");
 	}
 
 	return 1;
