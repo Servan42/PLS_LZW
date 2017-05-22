@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 
-void lecture_fichier(char* nom_fichier, char *tab){
+void lecture_fichier(char *nom_fichier, char *tab){
  	FILE *fichier;
 
  	int i = 0;
@@ -22,9 +22,21 @@ void lecture_fichier(char* nom_fichier, char *tab){
 	fclose(fichier);
 }
 
+void ecriture_fichier(char *nom_fichier, char *tab, int taille){
+	FILE *fichier;
+
+	fichier = fopen(nom_fichier, "w");
+	if (fichier != NULL){
+		for (int i = 0; i < taille; ++i){
+			fputc(tab[i], fichier);
+		}
+	}
+	fclose(fichier);
+}
+
 int main(int argc, char *argv[]){
 
-	if(argc==3){
+	if(argc==3 || argc==2){
 		int taille;
 	 	printf("rentrez la taille du fichier en octet :\n");
 	 	scanf("%d", &taille);
@@ -35,9 +47,15 @@ int main(int argc, char *argv[]){
 
 	 	//apelle à compression
 
+	 	if(argc == 2){
+	 		ecriture_fichier("compresse.txt", "lolilo xd", 9);
+	 	}
+	 	else{
+	 		ecriture_fichier(argv[2], "mdr lol", 7);
+	 	}
 	}
 	else{
-		printf("Il faut 2 fichiers en paramètres\n");
+		printf("Il faut 1 ou 2 fichiers en paramètres\n");
 	}
 
 	return 1;
