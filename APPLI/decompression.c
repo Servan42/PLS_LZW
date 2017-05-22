@@ -3,18 +3,16 @@
 #include <stdio.h>
 #include <stdint.h>
 #include "dictionnaire.h"
-/**** à adapter avec ce qu'on va faire dans compression ****/
+/**** FIXME à adapter avec ce qu'on va faire dans compression ****/
 
 
-void concat2(char *w, int tailleW, char *a,char *out){
-	int i;
-	for(i = 0; i < tailleW; i++)
-	{
-		out[i] = w[i];
-	}
-	out[i] = a[0];
-}
-
+/**
+* @fn void decompression(int taille, char *tab_entree, char*tab_sortie)
+* @brief Algorithme de décompression LZW.
+* @param[in] entier contant la taille du tableau tab_entree.
+* @param[in] tab_entree Tableau de caractère contenant la totalité de l'information contenue dans le fichier à décompresser.
+* @param[in, out] tab_sortie Tableau de caractère contenant la décompression des données.
+*/
 void decompression(int taille, char *tab_entree, char *tab_sortie){
 
 	int i = 0; //index du dict
@@ -30,12 +28,15 @@ void decompression(int taille, char *tab_entree, char *tab_sortie){
 	tab_sortie[0] = w[0];
 	int compt = 1; //itérant du tab de sortie
 
+	initialiser(); //initialisation du dictionnaire
+
 	for (int i = 1; i < taille ; ++i){
 		i2 = tab_entree[i+1]; // si ya un marqueur de fin sur le tableau en entrée
 
 		if(*CodeVersChaine(i, longueur)==-1){
 			w2 = (char *) CodeVersChaine(i, longueur2);
 			concat2(w2, *longueur2, a, w2);
+			w2[(*longueur2)+1] = a[0];
 		}
 
 		else{
@@ -47,7 +48,7 @@ void decompression(int taille, char *tab_entree, char *tab_sortie){
 			compt++;
 		}
 		a[0] = w2[0];
-		Inserer(SequenceVersCode((uint8_t *) w, *longueur),SequenceVersCode((uint8_t *) a,1));
+		Inserer(SequenceVersCode((uint8_t *) w, *longueur),SequenceVersCode((uint8_t *) a,1));	//ajout de mot au dictionnaire
 		w = (char *) CodeVersChaine(i2, longueur);
 	}
 
