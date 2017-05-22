@@ -46,12 +46,20 @@ int main(int argc, char *argv[]){
 	 	// printf("%s\n", tab_entree);
 
 	 	//apelle à compression
+	 	codage(char tab_entree, int taille, char *tab_compresse);
 
+	 	ecriture_fichier("compressé.txt", tab_decompresse, 9);
+
+	 	//apelle à décompression
+	 	decompression(int taille2, char *tab_compresse, char *tab_compresse);
+	 	// taille 2 etant la taille du tableau compressé
+
+	 	// taille3 etant la taille du tableau decompressé
 	 	if(argc == 2){
-	 		ecriture_fichier("compresse.txt", "lolilo xd", 9);
+	 		ecriture_fichier("decompressé.txt", tab_decompresse, taille3);
 	 	}
 	 	else{
-	 		ecriture_fichier(argv[2], "mdr lol", 7);
+	 		ecriture_fichier(argv[2], tab_decompresse, taille3);
 	 	}
 	}
 	else{
