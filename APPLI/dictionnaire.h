@@ -1,7 +1,12 @@
+
 #ifndef DICTIONNAIRE_H
 #define DICTIONNAIRE_H
 
-#define MAX 5000;
+#include "stdio.h"
+#include "stdlib.h"
+#include "stdint.h"
+
+#define MAX 5000
 
 typedef int Code;
 
