@@ -1,5 +1,10 @@
-#ifndef DICTIONAIRE_H
+#ifndef DICTIONNAIRE_H
+#define DICTIONNAIRE_H
 
-#define DICTIONAIRE_H
+typedef Code int;
 
-#endif DICTIONAIRE_H
+void initialiser();
+
+Code Inserer(Code prefixe,Code mono)
+
+#endif
