@@ -27,16 +27,18 @@ void dico_print(){
 
 void initialiser(){
   ind_dico = 0;
+  elem e;
   for(;ind_dico<256;ind_dico++){
-    elem e;
     char c =(char) ind_dico;
     e.longueur = 1;
     e.mot = malloc(sizeof(char));
     e.mot[0] = c;
     dico[ind_dico] = e;
   }
-  for(int i=256;i<MAX;i++){
-    elem e;
+  e.longueur = -1;
+  e.mot = NULL;
+  dico[256] = e;
+  for(int i=257;i<MAX;i++){
     e.longueur = 0;
     e.mot = NULL;
     dico[i]=e;
@@ -102,6 +104,9 @@ void CodeVersChaine (Code code, int *longueur, uint8_t *val){
   val = malloc((*longueur)*sizeof(uint8_t));
   for(int i=0;i<*longueur;i++){
     val[i]=dico[code].mot[i];
+  }
+  if(*longueur==0){
+    val = NULL;
   }
 }
 
