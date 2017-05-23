@@ -22,4 +22,6 @@ clean :
 
 cleanall : clean
 	rm -f -v $(EXE)
+	rm -f -v zip
+	rm -f -v unzip
 .PHONY : cleanall

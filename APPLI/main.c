@@ -23,7 +23,7 @@ int main(int argc, char *argv[]){
 	 int i = 0, tailleInput, tailleTabZip, tailleTabUnzip;
 	 char c;
 	 char *input;
-	 char *tabZip;
+	 int *tabZip;
 	 char *tabUnzip;
 		
 	 /* Lecture du fichier */
@@ -53,7 +53,7 @@ int main(int argc, char *argv[]){
 
 	 /* Appel à codage */
 
-	tabZip = malloc(tailleInput*sizeof(char));
+	tabZip = malloc(tailleInput*sizeof(int));
 	tailleTabZip = tailleInput;
 
 	// printf("Coucou\n");

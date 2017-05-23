@@ -13,7 +13,7 @@
 * @param[in] tab_entree Tableau de caractère contenant la totalité de l'information contenue dans le fichier à décompresser.
 * @param[in, out] tab_sortie Tableau de caractère contenant la décompression des données.
 */
-void decompression(int *taille, char *tab_entree, char *tab_sortie){
+void decompression(int *taille, int *tab_entree, char *tab_sortie){
 
 	uint8_t *var = NULL;
 	int i = 0; //index du dict
