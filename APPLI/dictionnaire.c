@@ -35,9 +35,26 @@ Code Inserer(Code prefixe,Code mono){
 }
 
 uint8_t *CodeVersChaine (Code code, int *longueur){
-  return 0;
+  int lg = *longueur;
+  uint8_t *val;
+  val = dico[code].mot;
+  return val;
 }
 
 Code SequenceVersCode (uint8_t *sequence, int longueur){
-  return 0;
+  Code result = -1;
+  for(int i=0;i<MAX;i++){
+    if(dico[i].longueur==longueur){
+      int j;
+      for(j=0;j<longueur;j++){
+        if(dico[i].mot[j] != sequence[j]){
+          break;
+        }
+      }
+      if(j==(longueur-1)){
+        result = i;
+      }
+    }
+  }
+  return result;
 }
