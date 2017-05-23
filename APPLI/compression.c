@@ -1,7 +1,6 @@
 /**
 * @file compression.c
 * @brief Fichier contenant l'algorithme de compression.
-* @author CHARLOT Servan
 */
 
 #include <stdlib.h>
@@ -10,10 +9,7 @@
 #include "compression.h"
 #include "dictionnaire.h"
 
-/*
-FIXME
-	out[i+1] = a[0];
-*/
+#define NBBITDEPART 9
 
 /**
 * @fn void concat(char *w, int tailleW, char *a,char *out)
@@ -33,39 +29,74 @@ void concat(char *w, int tailleW, char *a,char *out)
 	out[i] = a[0];
 }
 
-void impression(char * v, int lg){
-	for(int i=0;i<lg;i++){
-		printf("%c",v[i]);
+/**
+* @fn void display_output(int code, int *bits_restants_dans_tampon, int *tailleBitsMot, uint32_t *tampon)
+* @brief Fonction qui met en forme l'affichage du tableau de code.
+* @param[in] code Entier correspondant a un index du dictionnaire.
+* @param[in,out] bits_restants_dans_tampon Entier représentant le nombre de bits libres dans le tampon.
+* @param[in,out] tailleBitsMot Entier représantant la taille des des mots binaires correspondant aux indexes du dictionnaire.
+* @param[in,out] tampon Entier représantant le tampon de sortie, dans le quel on stock/extrait les valeurs à afficher.
+*/
+//TODO Ajouter un espace tous les 4 caractères.
+void display_output(int code, int *bits_restants_dans_tampon, int *tailleBitsMot, uint32_t *tampon)
+{
+	uint32_t resultat;
+
+	while(code >= (1 << *tailleBitsMot)-1)
+	{
+		*tailleBitsMot++;
 	}
+	
+	while(*bits_restants_dans_tampon >= 8)
+	{
+		resultat = (*tampon & 0xFF000000) >> 24;
+		printf("%02x",resultat);
+		*tampon = *tampon << 8;
+		*bits_restants_dans_tampon -= 8;
+	}
+	
+	*tampon |= code << (32 - *tailleBitsMot - *bits_restants_dans_tampon);
+	resultat = (*tampon & 0xFF000000) >> 24;
+	printf("%02x",resultat);
+	*tampon = *tampon << 8;
+	*bits_restants_dans_tampon += *tailleBitsMot - 8;
 }
+
+// void impression(char * v, int lg){
+// 	for(int i=0;i<lg;i++){
+// 		printf("%c",v[i]);
+// 	}
+// }
 
 /**
 * @fn void codage(char *input, int taille, char *output)
 * @brief Algorithme de compression LZW.
 * @param[in] input Tableau de caractère contenant la totalité de l'information contenue dans le fichier à compresser.
-* @param[in, out] taille Entier contant la taille du tableau input. A la fin, contient la taille du tableau output.
-* @param[in, out] output Tableau de caractère contenant la compression des données.
+* @param[in] taille Entier contant la taille du tableau input.
 */
-void codage(char *input, int *taille, int *output)
-{
-	//char output[taille] à déclarer dans main TODO
- 	//elem dico[MAX] -> déclaré dans dictionnaire.h
+void codage(char *input, int taille)
+{	
 	char *w;
 	char *wa;
 	char a[1];
 	int i, tailleW = 1, k = 0;
 
+	int code;
+	int bits_restants_dans_tampon = 0;
+	int tailleBitsMot = NBBITDEPART;
+	uint32_t tampon = 0;
+
 	initialiser();//ok
 
 	w = malloc(tailleW*sizeof(char));
 	w[0] = input[0];
-	//printf("Taille : %d\n",*taille);
-	for(i = 1 ; i < *taille ; i++)
+	//printf("Taille : %d\n",taille);
+	for(i = 1 ; i < taille ; i++)
 	{
 		//printf("Je rentre dans le for\n");
 		a[0] = input[i];
 
-		free(wa);
+		// free(wa);
 		wa = malloc((tailleW+1)*sizeof(char));
 		concat(w,tailleW,a,wa);
 
@@ -85,7 +116,10 @@ void codage(char *input, int *taille, int *output)
 		{
 			//printf("Le mot envoyé à SequenceVersCode : %s\n",w);
 			//printf("La taille envoyée à SequenceVersCode : %d\n",tailleW);
-			output[k] = SequenceVersCode(w,tailleW);
+			
+			code = SequenceVersCode(w,tailleW);
+			display_output(code, &bits_restants_dans_tampon, &tailleBitsMot, &tampon);
+
 			Inserer(SequenceVersCode(w,tailleW),SequenceVersCode(a,1));
 			tailleW = 1;
 			free(w);
@@ -95,12 +129,11 @@ void codage(char *input, int *taille, int *output)
 		}
 
 	}
-	printf("k = %d\n",k);
-	output[k] = SequenceVersCode(w,tailleW);
-	output[k+1] = 256;
-	*taille = k+2;
-	for(int i=0;i<*taille;i++){
-		printf("%d\n",output[i]);
-	}
+	
+	code = SequenceVersCode(w,tailleW);
+	display_output(code, &bits_restants_dans_tampon, &tailleBitsMot, &tampon);
 
+	code = 256;
+	display_output(code, &bits_restants_dans_tampon, &tailleBitsMot, &tampon);
+	
 }

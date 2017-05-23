@@ -1,104 +1,134 @@
+/**
+* @file main.c
+* @brief Fichier contenant la plante du programme.
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
 #include "compression.h"
 #include "decompression.h"
 
-void afficher_sortie(int *indexTab)
+void dispError()
 {
-
+	printf("Syntaxe : \n");
+	printf("\t./lzw -c fichier_a_compresser\n");
+	printf("\t./lzw -d fichier_a_decompresser\n");
 }
 
 int main(int argc, char *argv[]){
 
 	FILE *f = NULL;
-	FILE *f2 = NULL;
-	FILE *f3 = NULL;
+	int i = 0, tailleInput, tailleTabZip, tailleTabUnzip;
+	char c;
+	char *input;
+	char *tabUnzip;
+	// int *tabZip1;
 
-	if(argc != 2){
-		printf("Le programme prend un fichier à compresser en argument\n");
+	if(argc != 3){
+		dispError();
 		return 1;
 	}
 
-	 f = fopen(argv[1],"r");
-	 if (f == NULL){
-	 	printf("Erreur lors de l'ouverture du fichier\n");
-	 	return 1;
-	 }
+	if(argv[1][0] == '-')
+	{
+		switch(argv[1][1])
+		{
+			case 'c':
 
-	 int i = 0, tailleInput, tailleTabZip, tailleTabUnzip;
-	 char c;
-	 char *input;
-	 int *tabZip;
-	 char *tabUnzip;
-		
-	 /* Lecture du fichier */
+				f = fopen(argv[2],"r");
+				if (f == NULL){
+					printf("Erreur lors de l'ouverture du fichier %s\n",argv[2]);
+					return 1;
+				}
+				
+				/* Lecture du fichier */
+				while (!feof(f)) {
+					c = fgetc(f);
+					if(c != -1){
+						i++;
+					}
+				}
+					
+				rewind(f);
+					
+				tailleInput = i;
+				input = malloc(tailleInput*sizeof(char));
 
-	while (!feof(f)) {
-		c = fgetc(f);
-		if(c != -1){
-			i++;
+				i = 0;
+				while (!feof(f)) {
+					c = fgetc(f);
+					if(c != -1){
+						input[i] = c;
+						i++;
+					}
+				}
+				
+				fclose(f);
+
+				 /* Appel à codage */
+				tailleTabZip = tailleInput;
+				codage(input,tailleTabZip);
+
+				break;
+
+			case 'd':
+
+				/* Lecture du fichier à decompresser */
+
+				// f = fopen(argv[2], "r");
+				// if (f == NULL){
+				// 	printf("Erreur lors de l'ouverture du fichier %s\n",argv[2]);
+				// 	return 1;
+				// }
+
+				// while (!feof(f)) {
+				// 	c = fgetc(f);
+				// 	if(c != -1){
+				// 		i++;
+				// 	}
+				// }
+					
+				// rewind(f);
+					
+				// tailleInput = i;
+				// tabZip1 = malloc(tailleInput*sizeof(char));
+
+				// i = 0;
+				// while (!feof(f)) {
+				// 	c = fgetc(f);
+				// 	if(c != -1){
+				// 		tabZip1[i] = c;
+				// 		i++;
+				// 	}
+				// }
+
+				// fclose(f);
+
+				/* Appel à décompression */
+				printf("on va décompresser\n");
+
+				int tabZip1[10] = {97, 98, 99, 257, 259, 258, 100, 101, 10, 256};
+				tailleTabUnzip = tailleInput;
+				tabUnzip = malloc(tailleTabUnzip*sizeof(char));
+				decompression(&tailleInput,tabZip1,tabUnzip);
+
+				printf("on a décompressé\n");
+
+
+				for(int k = 0; k < tailleTabUnzip; k++)
+				{
+					printf("%c", tabUnzip[k]); 
+				}
+
+
+				break;
+
+			default:
+				dispError();
+				return 1;
+				break;
 		}
-	}
-		
-	rewind(f);
-		
-	tailleInput = i;
-	input = malloc(tailleInput*sizeof(char));
-
-	i = 0;
-	while (!feof(f)) {
-		c = fgetc(f);
-		if(c != -1){
-			input[i] = c;
-			i++;
-		}
-	}
-
-	 fclose(f);
-
-	 /* Appel à codage */
-
-	tabZip = malloc((tailleInput+1)*sizeof(int));
-	tailleTabZip = tailleInput;
-
-	codage(input,&tailleTabZip,tabZip);
-
-	printf("on sort de compression\n");
-
-	for(int k = 0; k < tailleTabZip; k++)
-	{
-		printf("%i", tabZip[k]); 
-	}
-	/* Stocakge de la compression dans un fichier */
-
-	f2 = fopen("zip", "w");
-	for(int k = 0; k < tailleTabZip; k++)
-	{
-		fputc(tabZip[k], f2); 
-	}
-
-	fclose(f2);
-
-	/* Appel à décompression */
-
-	printf("on va décompresser\n");
-
-	int tabZip1[10] = {97, 98, 99, 257, 259, 258, 100, 101, 10, 256};
-	tailleTabUnzip = tailleInput;
-	tabUnzip = malloc(tailleTabUnzip*sizeof(char));
-	decompression(&tailleTabZip,tabZip1,tabUnzip);
-
-	printf("on a décompressé\n");
-	/* Stockage de la decompression dans un fichier */
-
-	f3 = fopen("unzip", "w");
-	for(int k = 0; k < tailleTabUnzip; k++)
-	{
-		fputc(tabUnzip[k], f3); 
-	}
-
-	fclose(f3);
+	}else dispError();
 
 	return 0;
 }
