@@ -33,6 +33,12 @@ void concat(char *w, int tailleW, char *a,char *out)
 	out[i] = a[0];
 }
 
+void impression(char * v, int lg){
+	for(int i=0;i<lg;i++){
+		printf("%c",v[i]);
+	}
+}
+
 /**
 * @fn void codage(char *input, int taille, char *output)
 * @brief Algorithme de compression LZW.
@@ -53,10 +59,10 @@ void codage(char *input, int *taille, int *output)
 
 	w = malloc(tailleW*sizeof(char));
 	w[0] = input[0];
-	printf("Taille : %d\n",*taille);
+	//printf("Taille : %d\n",*taille);
 	for(i = 1 ; i < *taille ; i++)
 	{
-		printf("Je rentre dans le for\n");
+		//printf("Je rentre dans le for\n");
 		a[0] = input[i];
 
 		free(wa);
@@ -65,13 +71,20 @@ void codage(char *input, int *taille, int *output)
 
 		if(SequenceVersCode(wa,tailleW+1) != -1)
 		{
+			/*printf("J'ai trouvé ");
+			impression(wa,tailleW+1);
+			printf(" dans le dicitonnaire\n");*/
 			tailleW++;
-			free(wa);
 			w = malloc(tailleW*sizeof(char));
 			for(int j = 0; j < tailleW; j++) w[j] = wa[j];
+			/*printf("W devient : ");
+			impression(w,tailleW);
+			printf("\n");*/
 		}
 		else
 		{
+			//printf("Le mot envoyé à SequenceVersCode : %s\n",w);
+			//printf("La taille envoyée à SequenceVersCode : %d\n",tailleW);
 			output[k] = SequenceVersCode(w,tailleW);
 			Inserer(SequenceVersCode(w,tailleW),SequenceVersCode(a,1));
 			tailleW = 1;
@@ -82,10 +95,12 @@ void codage(char *input, int *taille, int *output)
 		}
 
 	}
-	printf("Le mot envoyé à SequenceVersCode : %s\n",w);
-	printf("La taille envoyée à SequenceVersCode : %d\n",tailleW);
 	printf("k = %d\n",k);
 	output[k] = SequenceVersCode(w,tailleW);
-	*taille = k+1;
+	output[k+1] = 256;
+	*taille = k+2;
+	for(int i=0;i<*taille;i++){
+		printf("%d\n",output[i]);
+	}
 
 }

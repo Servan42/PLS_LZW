@@ -113,11 +113,11 @@ uint8_t *CodeVersChaine (Code code, int *longueur, uint8_t *val){
 */
 
 Code SequenceVersCode (uint8_t *sequence, int longueur){
-  printf("SeqVerCode appelé avec : ");
+  /*printf("SeqVerCode appelé avec : ");
   for(int i=0;i<longueur;i++){
     printf("%c",sequence[i]);
   }
-  printf("\n");
+  printf("\n");*/
   Code result = -1;
   int trouve=0;
   int j = 0;
