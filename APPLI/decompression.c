@@ -20,32 +20,37 @@ void decompression(int *taille, int *tab_entree, char *tab_sortie){
 	int i2;
 	int *longueur = malloc(sizeof(int));
 	int *longueur2 = malloc(sizeof(int));
-	char *tab = malloc((*taille) * sizeof(char));  //pas sur de la taille a alouer
-	char *a = malloc(sizeof(char)); // un octet déclarer en string
-	a = (char *) CodeVersChaine(i, longueur, var);
-	char *w = malloc(15*sizeof(char)); // chaine d octet
+	uint8_t *tab = malloc((*taille) * sizeof(uint8_t));  //pas sur de la taille a alouer
+	uint8_t *a = malloc(sizeof(uint8_t)); // un octet déclarer en string
+	CodeVersChaine(i, longueur, a);
+	uint8_t *w = malloc(15*sizeof(uint8_t)); // chaine d octet
 	w[0]=a[0];
-	char *w2 = malloc((*longueur)*sizeof(char));
+	uint8_t *w2 = malloc((*longueur)*sizeof(uint8_t));
 	tab_sortie[0] = w[0];
 	int compt = 1; //itérant du tab de sortie
 
 	initialiser(); //initialisation du dictionnaire
 
-	for (int i = 1; i < *taille ; ++i){
+	i = 1;
+	uint8_t *val = malloc(15*sizeof(uint8_t));
+	CodeVersChaine(i, longueur, var);
+
+	while(*longueur!=(-1)){
 		i2 = tab_entree[i+1]; // si ya un marqueur de fin sur le tableau en entrée
 
-		if(*CodeVersChaine(i, longueur, var)==-1){
+		CodeVersChaine(i, longueur, var);
+		if(*longueur==-1){
 			free(w2);
-			w2 = malloc((*longueur)*sizeof(char));
-			w2 = (char *) CodeVersChaine(i, longueur2+1, var);
+			w2 = malloc((*longueur)*sizeof(uint8_t));
+			CodeVersChaine(i, longueur2+1, w2);
 			w2[i+1] = a[0];
 			w2[(*longueur2)+1] = a[0];
 		}
 
 		else{
 			free(w2);
-			w2 = malloc((*longueur)*sizeof(char));
-			w2 = (char *) CodeVersChaine(i2, longueur2, var);
+			w2 = malloc((*longueur)*sizeof(uint8_t));
+			CodeVersChaine(i2, longueur2, w2);
 		}
 
 		for(int j = 0 ; j < *longueur2 ; j++){
@@ -54,10 +59,12 @@ void decompression(int *taille, int *tab_entree, char *tab_sortie){
 		}
 		a[0] = w2[0];
 		Inserer(SequenceVersCode((uint8_t *) w, *longueur),SequenceVersCode((uint8_t *) a,1));	//ajout de mot au dictionnaire
-		w = (char *) CodeVersChaine(i2, longueur, var);
+		CodeVersChaine(i2, longueur, w);
+		i++;
+		CodeVersChaine(i, longueur, var);
 	}
 
-	tab_sortie = malloc((compt-1)*sizeof(char));
+	tab_sortie = malloc((compt-1)*sizeof(uint8_t));
 	for (int i = 0; i < compt; ++i)
 	{
 		tab_sortie[i] = tab[i];
