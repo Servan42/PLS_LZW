@@ -20,6 +20,7 @@ void decompression(int *taille, int *tab_entree, char *tab_sortie){
 	int i2;
 	int *longueur = malloc(sizeof(int));
 	int *longueur2 = malloc(sizeof(int));
+	int *cond = malloc(sizeof(int));
 	uint8_t *tab = malloc((*taille) * sizeof(uint8_t));  //pas sur de la taille a alouer
 	uint8_t *a = malloc(sizeof(uint8_t)); // un octet déclarer en string
 	CodeVersChaine(i, longueur, a);
@@ -32,13 +33,12 @@ void decompression(int *taille, int *tab_entree, char *tab_sortie){
 	initialiser(); //initialisation du dictionnaire
 
 	i = 1;
-	uint8_t *val = malloc(15*sizeof(uint8_t));
-	CodeVersChaine(i, longueur, var);
+	CodeVersChaine(i, cond, var);
 
 	while(*longueur!=(-1)){
 		i2 = tab_entree[i+1]; // si ya un marqueur de fin sur le tableau en entrée
 
-		CodeVersChaine(i, longueur, var);
+		CodeVersChaine(i+1, cond, var);
 		if(*longueur==-1){
 			free(w2);
 			w2 = malloc((*longueur)*sizeof(uint8_t));
@@ -61,7 +61,6 @@ void decompression(int *taille, int *tab_entree, char *tab_sortie){
 		Inserer(SequenceVersCode((uint8_t *) w, *longueur),SequenceVersCode((uint8_t *) a,1));	//ajout de mot au dictionnaire
 		CodeVersChaine(i2, longueur, w);
 		i++;
-		CodeVersChaine(i, longueur, var);
 	}
 
 	tab_sortie = malloc((compt-1)*sizeof(uint8_t));
