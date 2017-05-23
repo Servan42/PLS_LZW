@@ -2,14 +2,17 @@
 
 void dico_print(){
   for(int i=0;i<MAX;i++){
-    if((dico[i].longueur == 0)&&(i!=256)){
+    if(i==256){
+      i++;
+    }
+    else if(dico[i].longueur == 0){
       break;
     }
     int lg = dico[i].longueur;
     printf("\n");
     printf("%d : ",i);
     printf("lg = %d\n",lg);
-    for (int  j = 0; j < lg; j++) {
+    for(int j=0;j<lg;j++){
       printf("%c",dico[i].mot[j]);
     }
     //printf("%s\n",dico[i].mot);
@@ -50,9 +53,9 @@ void initialiser(){
 */
 
 Code Inserer(Code prefixe,Code mono){
-  printf("Insérer appelé\n");
-  printf("Code pref : %d\n",prefixe);
-  printf("Code mono : %d\n",mono);
+  //printf("Insérer appelé\n");
+  //printf("Code pref : %d\n",prefixe);
+  //printf("Code mono : %d\n",mono);
   char * str_pref = dico[prefixe].mot;
   int longueur_pref = dico[prefixe].longueur;
   char * str_mono = dico[mono].mot;
@@ -63,19 +66,26 @@ Code Inserer(Code prefixe,Code mono){
     nv_mot[i] = str_pref[i];
   }
   for(int j=0;j<longueur_mono;j++){
-    i++;
     nv_mot[i] = str_mono[j];
+    i++;
   }
   elem e;
   e.longueur = longueur_mono+longueur_pref;
   e.mot = malloc((longueur_mono+longueur_pref)*sizeof(char));
-  strcpy(e.mot,nv_mot);
+  //dico[ind_dico].longueur = longueur_mono+longueur_pref;
+  //dico[ind_dico].mot = malloc((longueur_mono+longueur_pref)*sizeof(char));
+  for(int i=0;i<longueur_mono+longueur_pref;i++){
+    e.mot[i] = nv_mot[i];
+  }
+  //strcpy(e.mot,nv_mot);
   dico[ind_dico] = e;
-  printf("NOUVELLE ENTREE DANS LA TABLE : \n");
+  /*printf("NOUVELLE ENTREE DANS LA TABLE : \n");
   printf("Code : %d\n",ind_dico);
   printf("Longueur : %d\n",dico[ind_dico].longueur);
-  printf("Mot : %s\n",dico[ind_dico].mot);
-  dico_print();
+  printf("Mot : %c",dico[ind_dico].mot[0]);
+  printf("%c\n",dico[ind_dico].mot[1]);
+
+  dico_print();*/
   ind_dico++;
   return ind_dico-1;
 }
@@ -103,6 +113,11 @@ uint8_t *CodeVersChaine (Code code, int *longueur, uint8_t *val){
 */
 
 Code SequenceVersCode (uint8_t *sequence, int longueur){
+  printf("SeqVerCode appelé avec : ");
+  for(int i=0;i<longueur;i++){
+    printf("%c",sequence[i]);
+  }
+  printf("\n");
   Code result = -1;
   int trouve=0;
   int j = 0;
