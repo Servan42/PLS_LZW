@@ -49,18 +49,19 @@ void codage(char *input, int *taille, char *output)
 	char a[1];
 	int i, tailleW = 1, k = 0;
 
-	initialiser();
-
+	initialiser();//ok
+	
 	w = malloc(tailleW*sizeof(char));
 	w[0] = input[0];
 
 	for(i = 1 ; i < *taille ; i++)
 	{
+		printf("Je rentre dans le for\n");
 		a[0] = input[i];
 
 		free(wa);
 		wa = malloc((tailleW+1)*sizeof(char));
-		concat(w,tailleW,a,wa);	
+		concat(w,tailleW,a,wa);
 
 		if(SequenceVersCode(wa,tailleW+1) != -1)
 		{
@@ -81,7 +82,9 @@ void codage(char *input, int *taille, char *output)
 		}
 
 	}
-
+	printf("Le mot envoyé à SequenceVersCode : %s\n",w);
+	printf("La taille envoyée à SequenceVersCode : %d\n",tailleW);
+	printf("k = %d\n",k);
 	output[k] = SequenceVersCode(w,tailleW);
 	*taille = k+1;
 

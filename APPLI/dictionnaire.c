@@ -1,5 +1,19 @@
 #include "dictionnaire.h"
 
+void dico_print(){
+  for(int i=0;i<MAX;i++){
+    if(dico[i].longueur == 0){
+      break;
+    }
+    int lg = dico[i].longueur;
+    printf("\n");
+    for (int  j = 0; j < lg; j++) {
+      printf("%c",dico[i].mot[j]);
+    }
+  }
+  printf("\n");
+}
+
 /**
 * @fn void initialiser()
 * @brief Cette fonction sert à intialiser le dictionnaire avec pour les 256 premiers codes l'ASCII de base
@@ -11,10 +25,12 @@ void initialiser(){
     elem e;
     char c =(char) ind_dico;
     e.longueur = 1;
-    e.mot = &c;
+    e.mot = malloc(sizeof(char));
+    e.mot[0] = c;
     dico[ind_dico] = e;
   }
   ind_dico++;
+  dico_print();
 }
 
 /**
@@ -70,19 +86,32 @@ uint8_t *CodeVersChaine (Code code, int *longueur, uint8_t *val){
 */
 
 Code SequenceVersCode (uint8_t *sequence, int longueur){
+  printf("SequenceVersCode appelée\n");
   Code result = -1;
+  int trouve=0;
+  int j = 0;
+  //dico_print();
   for(int i=0;i<MAX;i++){
+    //printf("Je parcours mon tableau\n");
     if(dico[i].longueur==longueur){
-      int j;
+      trouve = 1;
+      j=0;
       for(j=0;j<longueur;j++){
+        //printf("je checke si la char correspond\n");
+        //printf("Comparaison entre %c et %c\n",dico[i].mot[j],sequence[j]);
         if(dico[i].mot[j] != sequence[j]){
+          trouve = 0;
+          //printf("Il ne correspond pas\n");
           break;
         }
       }
-      if(j==(longueur-1)){
+      //printf("valeur de j : %d\n",j);
+      if((trouve)&&(j==(longueur-1))){
         result = i;
+        break;
       }
     }
   }
+  printf("Resultat : %d\n",result);
   return result;
 }

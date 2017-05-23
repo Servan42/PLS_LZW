@@ -20,6 +20,8 @@ int ind_dico;
 
 elem dico[MAX];
 
+void dico_print();
+
 void initialiser();
 
 Code Inserer(Code prefixe,Code mono);
