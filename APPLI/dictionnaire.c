@@ -99,12 +99,13 @@ Code Inserer(Code prefixe,Code mono){
 
 void CodeVersChaine (Code code, int *longueur, uint8_t *val){
   *longueur = dico[code].longueur;
-  val = malloc((*longueur)*sizeof(uint8_t));
-  // printf("code : %d\n", code);
+  val = realloc(val,(*longueur)*sizeof(uint8_t));
+  printf("code : %d\n", code);
   for(int i=0;i<(*longueur);i++){
     val[i] = dico[code].mot[i];
-    // printf("%c", val[i]);
+    printf("val[%d] = %c",i, val[i]);
   }
+  printf("\n");
   if(code==256){
     printf("fin de tableau\n");
     *longueur = -1;
