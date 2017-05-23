@@ -97,11 +97,12 @@ Code Inserer(Code prefixe,Code mono){
 * @return Il s'agit de la séquence correspondante
 */
 
-uint8_t *CodeVersChaine (Code code, int *longueur, uint8_t *val){
+void CodeVersChaine (Code code, int *longueur, uint8_t *val){
   *longueur = dico[code].longueur;
   val = malloc((*longueur)*sizeof(uint8_t));
-  strcpy ((char *) val,dico[code].mot);
-  return (uint8_t *)val;
+  for(int i=0;i<*longueur;i++){
+    val[i]=dico[code].mot[i];
+  }
 }
 
 /**

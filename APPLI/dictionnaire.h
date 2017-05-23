@@ -26,7 +26,7 @@ void initialiser();
 
 Code Inserer(Code prefixe,Code mono);
 
-uint8_t *CodeVersChaine (Code code, int *longueur, uint8_t *val);
+void CodeVersChaine (Code code, int *longueur, uint8_t *val);
 
 Code SequenceVersCode (uint8_t *sequence, int longueur);
 
