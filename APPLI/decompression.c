@@ -13,13 +13,14 @@
 * @param[in] tab_entree Tableau de caractère contenant la totalité de l'information contenue dans le fichier à décompresser.
 * @param[in, out] tab_sortie Tableau de caractère contenant la décompression des données.
 */
-void decompression(int taille, char *tab_entree, char *tab_sortie){
+void decompression(int *taille, char *tab_entree, char *tab_sortie){
+
 
 	int i = 0; //index du dict
 	int i2;
 	int *longueur = malloc(sizeof(int));
 	int *longueur2 = malloc(sizeof(int));
-	char *tab = malloc(taille * sizeof(char));  //pas sur de la taille a alouer
+	char *tab = malloc((*taille) * sizeof(char));  //pas sur de la taille a alouer
 	char *a = malloc(sizeof(char)); // un octet déclarer en string
 	a = (char *) CodeVersChaine(i, longueur);
 	char *w = malloc(15*sizeof(char)); // chaine d octet
@@ -30,7 +31,7 @@ void decompression(int taille, char *tab_entree, char *tab_sortie){
 
 	initialiser(); //initialisation du dictionnaire
 
-	for (int i = 1; i < taille ; ++i){
+	for (int i = 1; i < *taille ; ++i){
 		i2 = tab_entree[i+1]; // si ya un marqueur de fin sur le tableau en entrée
 
 		if(*CodeVersChaine(i, longueur)==-1){
@@ -57,4 +58,5 @@ void decompression(int taille, char *tab_entree, char *tab_sortie){
 	{
 		tab_sortie[i] = tab[i];
 	}
+	*taille = compt;
 }

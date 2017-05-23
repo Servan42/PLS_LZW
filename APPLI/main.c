@@ -37,24 +37,45 @@ void ecriture_fichier(char *nom_fichier, char *tab, int taille){
 int main(int argc, char *argv[]){
 
 	if(argc==3 || argc==2){
-		int taille;
+		int *taille;
 	 	printf("rentrez la taille du fichier en octet :\n");
-	 	scanf("%d", &taille);
+	 	scanf("%d", taille);
 
-	 	char *tab_entree = malloc(taille*sizeof(char));
+	 	int taille1; //sauv de la taille tableau d'entrée
+	 	int taille2; //sauv de la taille du tableau compressé
+	 	int taille3; //sauv de la taille du tableau décompressé
+
+	 	char *tab_entree = malloc((*taille)*sizeof(char));
 	 	lecture_fichier(argv[1], tab_entree);
 	 	// printf("%s\n", tab_entree);
 
-	 	//apelle à compression
-	 	codage(char tab_entree, int taille, char *tab_compresse);
 
-	 	ecriture_fichier("compressé.txt", tab_decompresse, 9);
+	 	//apelle à compression
+	 	taille1 = *taille;
+	 	char *tab_compresse1 = malloc(taille1*sizeof(char));
+	 	codage(tab_entree, taille, tab_compresse1);
+	 	taille2 = *taille;
+
+	 	char *tab_compresse = malloc(taille2*sizeof(char));
+	 	for (int i = 0; i < taille2; ++i)
+	 	{
+	 		tab_compresse[i] = tab_compresse1[i];
+	 	}
+	 	ecriture_fichier("compressé.txt", tab_compresse, taille2);
+
+
 
 	 	//apelle à décompression
-	 	decompression(int taille2, char *tab_compresse, char *tab_compresse);
-	 	// taille 2 etant la taille du tableau compressé
+	 	char *tab_decompresse1 = malloc(taille1*sizeof(char));
+	 	decompression(taille,tab_compresse, tab_decompresse1);
+	 	taille3 = *taille;
+	 	char *tab_decompresse = malloc(taille3*sizeof(char));
+	 	for (int i = 0; i < taille3; ++i)
+	 	{
+	 		tab_decompresse[i] = tab_decompresse1[i];
+	 	}
 
-	 	// taille3 etant la taille du tableau decompressé
+
 	 	if(argc == 2){
 	 		ecriture_fichier("decompressé.txt", tab_decompresse, taille3);
 	 	}

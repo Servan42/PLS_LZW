@@ -59,11 +59,11 @@ void codage(char *input, int taille, char *output)
 	for(i = 1 ; i < taille ; i++)
 	{
 		a[0] = input[i];
-		
+
 		free(wa);
 		wa = malloc((tailleW+1)*sizeof(char));
 		concat(w,tailleW,a,wa);	
-		
+
 		if(SequenceVersCode(wa,tailleW+1) != -1)
 		{
 			tailleW++;
