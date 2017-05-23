@@ -27,18 +27,16 @@ void dico_print(){
 
 void initialiser(){
   ind_dico = 0;
-  elem e;
   for(;ind_dico<256;ind_dico++){
+    elem e;
     char c =(char) ind_dico;
     e.longueur = 1;
     e.mot = malloc(sizeof(char));
     e.mot[0] = c;
     dico[ind_dico] = e;
   }
-  e.longueur = -1;
-  e.mot = NULL;
-  dico[256] = e;
-  for(int i=257;i<MAX;i++){
+  for(int i=256;i<MAX;i++){
+    elem e;
     e.longueur = 0;
     e.mot = NULL;
     dico[i]=e;
@@ -102,11 +100,14 @@ Code Inserer(Code prefixe,Code mono){
 void CodeVersChaine (Code code, int *longueur, uint8_t *val){
   *longueur = dico[code].longueur;
   val = malloc((*longueur)*sizeof(uint8_t));
-  for(int i=0;i<*longueur;i++){
-    val[i]=dico[code].mot[i];
+  // printf("code : %d\n", code);
+  for(int i=0;i<(*longueur);i++){
+    val[i] = dico[code].mot[i];
+    // printf("%c", val[i]);
   }
-  if(*longueur==0){
-    val = NULL;
+  if(code==256){
+    printf("fin de tableau\n");
+    *longueur = -1;
   }
 }
 

@@ -24,8 +24,9 @@ void decompression(int *taille, int *tab_entree, char *tab_sortie){
 	uint8_t *tab = malloc((*taille) * sizeof(uint8_t));  //pas sur de la taille a alouer
 	uint8_t *a = malloc(sizeof(uint8_t)); // un octet déclarer en string
 	CodeVersChaine(i, longueur, a);
-	uint8_t *w = malloc(15*sizeof(uint8_t)); // chaine d octet
+	uint8_t *w = malloc(15*sizeof(char)); // chaine d octet
 	w[0]=a[0];
+	printf("caractere de w : %c\n", w[0]);
 	uint8_t *w2 = malloc((*longueur)*sizeof(uint8_t));
 	tab_sortie[0] = w[0];
 	int compt = 1; //itérant du tab de sortie
@@ -36,10 +37,15 @@ void decompression(int *taille, int *tab_entree, char *tab_sortie){
 	CodeVersChaine(i, cond, var);
 
 	while(*longueur!=(-1)){
+		printf("\n");
+		printf("On rentre dans le while pour tab_entree de %d : %d\n", i, tab_entree[i]);
+		// printf("%s\n",);
 		i2 = tab_entree[i+1]; // si ya un marqueur de fin sur le tableau en entrée
 
 		CodeVersChaine(i+1, cond, var);
-		if(*longueur==-1){
+		printf("cond : %d\n", *cond);
+		if(*cond==0){
+			printf("on rentre dans le if\n");
 			free(w2);
 			w2 = malloc((*longueur)*sizeof(uint8_t));
 			CodeVersChaine(i, longueur2+1, w2);
@@ -48,12 +54,15 @@ void decompression(int *taille, int *tab_entree, char *tab_sortie){
 		}
 
 		else{
+			printf("on rentre dans le else\n");
 			free(w2);
 			w2 = malloc((*longueur)*sizeof(uint8_t));
 			CodeVersChaine(i2, longueur2, w2);
 		}
 
+		printf("On écrit dans le tab de sortie\n");
 		for(int j = 0 ; j < *longueur2 ; j++){
+			printf(" %d : %c |\n", j, w2[j]);
 			tab[compt] = w2[j];
 			compt++;
 		}
@@ -67,6 +76,7 @@ void decompression(int *taille, int *tab_entree, char *tab_sortie){
 	for (int i = 0; i < compt; ++i)
 	{
 		tab_sortie[i] = tab[i];
+		printf("tableau de sortie élément %d : %c\n",i, tab[i]);
 	}
 	*taille = compt;
 }
