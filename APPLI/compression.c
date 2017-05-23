@@ -50,10 +50,10 @@ void codage(char *input, int *taille, char *output)
 	int i, tailleW = 1, k = 0;
 
 	initialiser();//ok
-	
+
 	w = malloc(tailleW*sizeof(char));
 	w[0] = input[0];
-
+	printf("Taille : %d\n",*taille);
 	for(i = 1 ; i < *taille ; i++)
 	{
 		printf("Je rentre dans le for\n");
