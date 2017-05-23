@@ -37,7 +37,7 @@ void ecriture_fichier(char *nom_fichier, char *tab, int taille){
 int main(int argc, char *argv[]){
 
 	if(argc==3 || argc==2){
-		int *taille;
+		int *taille = malloc(sizeof(int));
 	 	printf("rentrez la taille du fichier en octet :\n");
 	 	scanf("%d", taille);
 

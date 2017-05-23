@@ -36,7 +36,7 @@ void decompression(int *taille, char *tab_entree, char *tab_sortie){
 
 		if(*CodeVersChaine(i, longueur)==-1){
 			w2 = (char *) CodeVersChaine(i, longueur2);
-			concat2(w2, *longueur2, a, w2);
+			w2[i+1] = a[0];
 			w2[(*longueur2)+1] = a[0];
 		}
 
