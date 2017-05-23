@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <maths.h>
+#include <math.h>
 #include "compression.h"
 #include "decompression.h"
 
