@@ -1,8 +1,5 @@
 #include "dictionnaire.h"
 
-//TODO : Revoir CodeVersChaine. Moyennement sûr de l'utilité du paramètre *longueur
-
-
 /**
 * @fn void initialiser()
 * @brief Cette fonction sert à intialiser le dictionnaire avec pour les 256 premiers codes l'ASCII de base
@@ -52,17 +49,16 @@ Code Inserer(Code prefixe,Code mono){
 
 /**
 * @fn uint8_t *CodeVersChaine (Code code, int *longueur)
-* @brief Prends un code et renvoi la chaine correspondante
-* @param[in] code Le code pour lequel il faut chercher la séquence correspondante
-* @param[in] longueur ??????????????????
+* @brief Prends un code et renvoiaut chercher la séquence correspondante
+* @param[in] longueur Il s'agit de la longueur de la séquence retournée
 * @return Il s'agit de la séquence correspondante
 */
 
-uint8_t *CodeVersChaine (Code code, int *longueur){
-  uint8_t *val;
-  val = dico[code].mot;
+uint8_t *CodeVersChaine (Code code, int *longueur, uint8_t *val){
   *longueur = dico[code].longueur;
-  return val;
+  val = malloc((*longueur)*sizeof(uint8_t));
+  strcpy ((char *) val,dico[code].mot);
+  return (uint8_t *)val;
 }
 
 /**
