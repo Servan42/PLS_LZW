@@ -15,17 +15,17 @@
 */
 void decompression(int *taille, char *tab_entree, char *tab_sortie){
 
-
+	uint8_t *var = NULL;
 	int i = 0; //index du dict
 	int i2;
 	int *longueur = malloc(sizeof(int));
 	int *longueur2 = malloc(sizeof(int));
 	char *tab = malloc((*taille) * sizeof(char));  //pas sur de la taille a alouer
 	char *a = malloc(sizeof(char)); // un octet déclarer en string
-	a = (char *) CodeVersChaine(i, longueur);
+	a = (char *) CodeVersChaine(i, longueur, var);
 	char *w = malloc(15*sizeof(char)); // chaine d octet
 	w[0]=a[0];
-	char *w2 = malloc(15*sizeof(char));
+	char *w2 = malloc((*longueur)*sizeof(char));
 	tab_sortie[0] = w[0];
 	int compt = 1; //itérant du tab de sortie
 
@@ -34,14 +34,18 @@ void decompression(int *taille, char *tab_entree, char *tab_sortie){
 	for (int i = 1; i < *taille ; ++i){
 		i2 = tab_entree[i+1]; // si ya un marqueur de fin sur le tableau en entrée
 
-		if(*CodeVersChaine(i, longueur)==-1){
-			w2 = (char *) CodeVersChaine(i, longueur2);
+		if(*CodeVersChaine(i, longueur, var)==-1){
+			free(w2);
+			w2 = malloc((*longueur)*sizeof(char));
+			w2 = (char *) CodeVersChaine(i, longueur2+1, var);
 			w2[i+1] = a[0];
 			w2[(*longueur2)+1] = a[0];
 		}
 
 		else{
-			w2 = (char *) CodeVersChaine(i2, longueur2);
+			free(w2);
+			w2 = malloc((*longueur)*sizeof(char));
+			w2 = (char *) CodeVersChaine(i2, longueur2, var);
 		}
 
 		for(int j = 0 ; j < *longueur2 ; j++){
@@ -50,7 +54,7 @@ void decompression(int *taille, char *tab_entree, char *tab_sortie){
 		}
 		a[0] = w2[0];
 		Inserer(SequenceVersCode((uint8_t *) w, *longueur),SequenceVersCode((uint8_t *) a,1));	//ajout de mot au dictionnaire
-		w = (char *) CodeVersChaine(i2, longueur);
+		w = (char *) CodeVersChaine(i2, longueur, var);
 	}
 
 	tab_sortie = malloc((compt-1)*sizeof(char));
