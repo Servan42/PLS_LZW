@@ -64,11 +64,12 @@ int main(int argc, char *argv[]){
 
 	codage(input,&tailleTabZip,tabZip);
 
+	printf("on sort de compression\n");
+
 	for(int k = 0; k < tailleTabZip; k++)
 	{
 		printf("%i", tabZip[k]); 
 	}
-
 	/* Stocakge de la compression dans un fichier */
 
 	f2 = fopen("zip", "w");
@@ -81,10 +82,14 @@ int main(int argc, char *argv[]){
 
 	/* Appel à décompression */
 
+	printf("on va décompresser\n");
+
+	int tabZip1[10] = {97, 98, 99, 257, 259, 258, 100, 101, 10, 256};
 	tailleTabUnzip = tailleInput;
 	tabUnzip = malloc(tailleTabUnzip*sizeof(char));
-	decompression(&tailleTabZip,tabZip,tabUnzip);
+	decompression(&tailleTabZip,tabZip1,tabUnzip);
 
+	printf("on a décompressé\n");
 	/* Stockage de la decompression dans un fichier */
 
 	f3 = fopen("unzip", "w");
