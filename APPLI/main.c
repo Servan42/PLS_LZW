@@ -1,7 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <maths.h>
 #include "compression.h"
 #include "decompression.h"
+
+void afficher_sortie(int *indexTab)
+{
+
+}
 
 int main(int argc, char *argv[]){
 
@@ -53,20 +59,15 @@ int main(int argc, char *argv[]){
 
 	 /* Appel à codage */
 
-	tabZip = malloc(tailleInput*sizeof(int));
+	tabZip = malloc((tailleInput+1)*sizeof(int));
 	tailleTabZip = tailleInput;
-
-	// printf("Coucou\n");
 
 	codage(input,&tailleTabZip,tabZip);
 
-
-
-	// for(int k = 0; k < tailleTabZip; k++)
-	// {
-	// 	printf("%c(%i)", tabZip[k],tabZip[k]); 
-	// }
-	// printf("bye\n");
+	for(int k = 0; k < tailleTabZip; k++)
+	{
+		printf("%i", tabZip[k]); 
+	}
 
 	/* Stocakge de la compression dans un fichier */
 
@@ -77,8 +78,6 @@ int main(int argc, char *argv[]){
 	}
 
 	fclose(f2);
-
-	return 2;
 
 	/* Appel à décompression */
 
