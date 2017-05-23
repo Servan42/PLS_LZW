@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "compression.h"
+#include "decompression.h"
 
 
 void lecture_fichier(char *nom_fichier, char *tab){
