@@ -2,14 +2,17 @@
 
 void dico_print(){
   for(int i=0;i<MAX;i++){
-    if(dico[i].longueur == 0){
+    if((dico[i].longueur == 0)&&(i!=256)){
       break;
     }
     int lg = dico[i].longueur;
     printf("\n");
+    printf("%d : ",i);
+    printf("lg = %d\n",lg);
     for (int  j = 0; j < lg; j++) {
       printf("%c",dico[i].mot[j]);
     }
+    //printf("%s\n",dico[i].mot);
   }
   printf("\n");
 }
@@ -29,6 +32,12 @@ void initialiser(){
     e.mot[0] = c;
     dico[ind_dico] = e;
   }
+  for(int i=256;i<MAX;i++){
+    elem e;
+    e.longueur = 0;
+    e.mot = NULL;
+    dico[i]=e;
+  }
   ind_dico++;
 }
 
@@ -41,6 +50,9 @@ void initialiser(){
 */
 
 Code Inserer(Code prefixe,Code mono){
+  printf("Insérer appelé\n");
+  printf("Code pref : %d\n",prefixe);
+  printf("Code mono : %d\n",mono);
   char * str_pref = dico[prefixe].mot;
   int longueur_pref = dico[prefixe].longueur;
   char * str_mono = dico[mono].mot;
@@ -56,8 +68,14 @@ Code Inserer(Code prefixe,Code mono){
   }
   elem e;
   e.longueur = longueur_mono+longueur_pref;
-  e.mot = nv_mot;
+  e.mot = malloc((longueur_mono+longueur_pref)*sizeof(char));
+  strcpy(e.mot,nv_mot);
   dico[ind_dico] = e;
+  printf("NOUVELLE ENTREE DANS LA TABLE : \n");
+  printf("Code : %d\n",ind_dico);
+  printf("Longueur : %d\n",dico[ind_dico].longueur);
+  printf("Mot : %s\n",dico[ind_dico].mot);
+  dico_print();
   ind_dico++;
   return ind_dico-1;
 }
@@ -106,5 +124,7 @@ Code SequenceVersCode (uint8_t *sequence, int longueur){
       }
     }
   }
+  printf("Je renvoi le code : %d\n",result);
+  //dico_print();
   return result;
 }
