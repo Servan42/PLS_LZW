@@ -30,12 +30,12 @@ void decompression(int *taille, int *tab_entree, char *tab_sortie){
 	w[0]=a[0];
 	printf("caractere de w : %c\n", w[0]);
 	uint8_t *w2 = malloc((*longueur)*sizeof(uint8_t));
-	tab_sortie[0] = w[0];
-	printf("tabsortie 0 : %c\n",tab_sortie[0]);
+	tab[0] = w[0];
+	printf("tabsortie 0 : %c\n",tab[0]);
 	int compt = 1; //itérant du tab de sortie
 
 
-	i = 1;
+	i = 0;
 	CodeVersChaine(tab_entree[i], cond, var);
 
 	while(*longueur!=(-1)){
@@ -64,12 +64,12 @@ void decompression(int *taille, int *tab_entree, char *tab_sortie){
 
 		printf("On écrit dans le tab de sortie\n");
 		for(int j = 0 ; j < *longueur2 ; j++){
-			printf(" %d : %c |\n", j, w2[j]);
+			printf(" %d : %c |\n", compt, w2[j]);
 			tab[compt] = w2[j];
 			compt++;
 		}
 		a[0] = w2[0];
-		Inserer(SequenceVersCode((uint8_t *) w, *longueur),SequenceVersCode((uint8_t *) a,1));	//ajout de mot au dictionnaire
+		Inserer(SequenceVersCode(w, *longueur),SequenceVersCode(a,1));	//ajout de mot au dictionnaire
 		CodeVersChaine(tab_entree[i2], longueur, w);
 		i++;
 	}
@@ -81,4 +81,5 @@ void decompression(int *taille, int *tab_entree, char *tab_sortie){
 		printf("tableau de sortie élément %d : %c\n",i, tab[i]);
 	}
 	*taille = compt;
+	//dico_print();
 }
