@@ -24,7 +24,6 @@ int main(int argc, char *argv[]){
 	//int sip[2000];
 	char *input;
 	char *tabUnzip;
-	 int *tabZip1;
 
 	if(argc != 3){
 		dispError();
@@ -111,14 +110,19 @@ int main(int argc, char *argv[]){
 
 				/* Appel à décompression */
 				printf("on va décompresser\n");
-				int tabZip1[25] = {66,111,110,106,111,117,114,32,98,97,110,100,101,115,32,268,32,115,97,108,111,112,269,10,256};
+				/* compressage de "abcdabd"
+					donne en héxa : 30 98 8c 66 48 09 92 00
+					soit en déci
+				*/
+				int tabZip1[8] = {48, 152, 140, 102, 72, 9, 146, 0};
+				// int tabZip1[25] = {66,111,110,106,111,117,114,32,98,97,110,100,101,115,32,268,32,115,97,108,111,112,269,10,256};
 				tailleTabUnzip = tailleInput;
 				tabUnzip = malloc(tailleTabUnzip*sizeof(char));
-				tailleInput = 25;
+				tailleInput = 8;
 				decompression(&tailleInput,tabZip1,tabUnzip);
 				printf("DICTIONNAIRE APRES DECODAGE :\n");
 				printf("-------------------------------\n");
-				dico_print();
+				// dico_print();
 				printf("-------------------------------\n");
 				printf("on a décompressé\n");
 
