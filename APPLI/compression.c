@@ -12,9 +12,7 @@
 
 /*
 FIXME
-	Peut etre mettre le type de w en int8 pour coller avec dictionnaire.
 	out[i+1] = a[0];
-	Revoir avec Thomas sequence vers code pour le passage de a.
 */
 
 /**
@@ -39,10 +37,10 @@ void concat(char *w, int tailleW, char *a,char *out)
 * @fn void codage(char *input, int taille, char *output)
 * @brief Algorithme de compression LZW.
 * @param[in] input Tableau de caractère contenant la totalité de l'information contenue dans le fichier à compresser.
-* @param[in] taille Entier contant la taille du tableau input.
+* @param[in, out] taille Entier contant la taille du tableau input. A la fin, contient la taille du tableau output.
 * @param[in, out] output Tableau de caractère contenant la compression des données.
 */
-void codage(char *input, int taille, char *output)
+void codage(char *input, int *taille, char *output)
 {
 	//char output[taille] à déclarer dans main TODO
  	//elem dico[MAX] -> déclaré dans dictionnaire.h
@@ -56,7 +54,7 @@ void codage(char *input, int taille, char *output)
 	w = malloc(tailleW*sizeof(char));
 	w[0] = input[0];
 
-	for(i = 1 ; i < taille ; i++)
+	for(i = 1 ; i < *taille ; i++)
 	{
 		a[0] = input[i];
 		
@@ -85,5 +83,6 @@ void codage(char *input, int taille, char *output)
 	}
 
 	output[k] = SequenceVersCode(w,tailleW);
+	*taille = k+1;
 
 }
