@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "rle.h"
 
 /* RLE À APPLIQUÉ AVANT LA DÉCOMPRESSION : PERMET DE TRANSFORMER
 				XX -> X§1
