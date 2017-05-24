@@ -1,6 +1,8 @@
 EXE=lzw
 FLAGS= -Wall -g
-OPTIONS= -DDEBUG
+# OPTIONS= -DDEBUG
+OPTIONS=
+
 
 $(EXE) : main.o dictionnaire.o compression.o decompression.o
 	gcc -o $(EXE) main.o dictionnaire.o compression.o decompression.o
