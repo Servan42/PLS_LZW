@@ -52,27 +52,27 @@ void display_output(int code, int *bits_restants_dans_tampon, int *tailleBitsMot
 	{
 		resultat = (*tampon & 0xFF000000) >> 24;
 		//printf("||||||||%d||||||||||\n",resultat);
-		if (*spacing >= 2)
-		{
-			printf(" ");
-			*spacing = 0;
-		}
-		printf("%02x",resultat);
-		(*spacing)++;
+		// if (*spacing >= 2)
+		// {
+		// 	printf(" ");
+		// 	*spacing = 0;
+		// }
+		printf("%c",resultat);
+		// (*spacing)++;
 		*tampon = *tampon << 8;
 		*bits_restants_dans_tampon -= 8;
 	}
 
 	*tampon |= code << (32 - *tailleBitsMot - *bits_restants_dans_tampon);
 	resultat = (*tampon & 0xFF000000) >> 24;
-	if (*spacing >= 2)
-	{
-		printf(" ");
-		*spacing = 0;
+	// if (*spacing >= 2)
+	// {
+	// 	printf(" ");
+	// 	*spacing = 0;
 
-	}
-	printf("%02x",resultat);
-	(*spacing)++;
+	// }
+	printf("%c",resultat);
+	// (*spacing)++;
 	*tampon = *tampon << 8;
 	*bits_restants_dans_tampon += *tailleBitsMot - 8;
 }
@@ -151,6 +151,8 @@ void codage(char *input, int taille)
 
 	code = 256;
 	display_output(code, &bits_restants_dans_tampon, &tailleBitsMot, &tampon, &spacing);
-	printf(" 00\n");
+
+	printf("%c",(tampon & 0xFF000000) >> 32 - bits_restants_dans_tampon);
+	// printf(" 00\n");
 
 }
