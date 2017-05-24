@@ -100,14 +100,20 @@ Code Inserer(Code prefixe,Code mono){
 void CodeVersChaine (Code code, int *longueur, uint8_t *val){
   *longueur = dico[code].longueur;
   val = realloc(val,(*longueur)*sizeof(uint8_t));
+  #ifdef DEBUG
   printf("code : %d\n", code);
+  #endif
   for(int i=0;i<(*longueur);i++){
     val[i] = dico[code].mot[i];
+    #ifdef DEBUG
     printf("val[%d] = %c",i, val[i]);
+    #endif
   }
   printf("\n");
   if(code==256){
+    #ifdef DEBUG
     printf("fin de tableau\n");
+    #endif
     *longueur = -1;
   }
 }
@@ -121,11 +127,13 @@ void CodeVersChaine (Code code, int *longueur, uint8_t *val){
 */
 
 Code SequenceVersCode (uint8_t *sequence, int longueur){
-  /*printf("SeqVerCode appelé avec : ");
+  #ifdef DEBUG
+  printf("SeqVerCode appelé avec : ");
   for(int i=0;i<longueur;i++){
     printf("%c",sequence[i]);
   }
-  printf("\n");*/
+  printf("\n");
+  #endif
   Code result = -1;
   int trouve=0;
   int j = 0;
@@ -147,7 +155,9 @@ Code SequenceVersCode (uint8_t *sequence, int longueur){
       }
     }
   }
+  #ifdef DEBUG
   printf("Je renvoi le code : %d\n",result);
-  //dico_print();
+  dico_print();
+  #endif
   return result;
 }

@@ -46,7 +46,7 @@ void display_output(int code, int *bits_restants_dans_tampon, int *tailleBitsMot
 	{
 		*tailleBitsMot++;
 	}
-	
+
 	while(*bits_restants_dans_tampon >= 8)
 	{
 		resultat = (*tampon & 0xFF000000) >> 24;
@@ -54,7 +54,7 @@ void display_output(int code, int *bits_restants_dans_tampon, int *tailleBitsMot
 		*tampon = *tampon << 8;
 		*bits_restants_dans_tampon -= 8;
 	}
-	
+
 	*tampon |= code << (32 - *tailleBitsMot - *bits_restants_dans_tampon);
 	resultat = (*tampon & 0xFF000000) >> 24;
 	printf("%02x",resultat);
@@ -75,7 +75,7 @@ void display_output(int code, int *bits_restants_dans_tampon, int *tailleBitsMot
 * @param[in] taille Entier contant la taille du tableau input.
 */
 void codage(char *input, int taille)
-{	
+{
 	char *w;
 	char *wa;
 	char a[1];
@@ -116,7 +116,7 @@ void codage(char *input, int taille)
 		{
 			//printf("Le mot envoyé à SequenceVersCode : %s\n",w);
 			//printf("La taille envoyée à SequenceVersCode : %d\n",tailleW);
-			
+
 			code = SequenceVersCode(w,tailleW);
 			display_output(code, &bits_restants_dans_tampon, &tailleBitsMot, &tampon);
 
@@ -129,11 +129,11 @@ void codage(char *input, int taille)
 		}
 
 	}
-	
+
 	code = SequenceVersCode(w,tailleW);
 	display_output(code, &bits_restants_dans_tampon, &tailleBitsMot, &tampon);
 
 	code = 256;
 	display_output(code, &bits_restants_dans_tampon, &tailleBitsMot, &tampon);
-	
+
 }
