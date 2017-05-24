@@ -36,9 +36,10 @@ void concat(char *w, int tailleW, char *a,char *out)
 * @param[in,out] bits_restants_dans_tampon Entier représentant le nombre de bits libres dans le tampon.
 * @param[in,out] tailleBitsMot Entier représantant la taille des des mots binaires correspondant aux indexes du dictionnaire.
 * @param[in,out] tampon Entier représantant le tampon de sortie, dans le quel on stock/extrait les valeurs à afficher.
+* @param[in,out] spacing Entier permettant la gestion des espaces dans le format de sortie
 */
 //TODO Ajouter un espace tous les 4 caractères.
-void display_output(int code, int *bits_restants_dans_tampon, int *tailleBitsMot, uint32_t *tampon)
+void display_output(int code, int *bits_restants_dans_tampon, int *tailleBitsMot, uint32_t *tampon, int *spacing)
 {
 	uint32_t resultat;
 
@@ -51,6 +52,12 @@ void display_output(int code, int *bits_restants_dans_tampon, int *tailleBitsMot
 	{
 		resultat = (*tampon & 0xFF000000) >> 24;
 		printf("%02x",resultat);
+		*spacing++;
+		if (*spacing >= 2)
+		{
+			printf(" ");
+			*spacing = 0;
+		}
 		*tampon = *tampon << 8;
 		*bits_restants_dans_tampon -= 8;
 	}
@@ -58,6 +65,12 @@ void display_output(int code, int *bits_restants_dans_tampon, int *tailleBitsMot
 	*tampon |= code << (32 - *tailleBitsMot - *bits_restants_dans_tampon);
 	resultat = (*tampon & 0xFF000000) >> 24;
 	printf("%02x",resultat);
+	*spacing++;
+	if (*spacing >= 2)
+	{
+		printf(" ");
+		*spacing = 0;
+	}
 	*tampon = *tampon << 8;
 	*bits_restants_dans_tampon += *tailleBitsMot - 8;
 }
@@ -85,6 +98,7 @@ void codage(char *input, int taille)
 	int bits_restants_dans_tampon = 0;
 	int tailleBitsMot = NBBITDEPART;
 	uint32_t tampon = 0;
+	int spacing = 0;
 
 	initialiser();//ok
 
@@ -118,7 +132,7 @@ void codage(char *input, int taille)
 			//printf("La taille envoyée à SequenceVersCode : %d\n",tailleW);
 
 			code = SequenceVersCode(w,tailleW);
-			display_output(code, &bits_restants_dans_tampon, &tailleBitsMot, &tampon);
+			display_output(code, &bits_restants_dans_tampon, &tailleBitsMot, &tampon, &spacing);
 
 			Inserer(SequenceVersCode(w,tailleW),SequenceVersCode(a,1));
 			tailleW = 1;
@@ -131,9 +145,9 @@ void codage(char *input, int taille)
 	}
 
 	code = SequenceVersCode(w,tailleW);
-	display_output(code, &bits_restants_dans_tampon, &tailleBitsMot, &tampon);
+	display_output(code, &bits_restants_dans_tampon, &tailleBitsMot, &tampon, &spacing);
 
 	code = 256;
-	display_output(code, &bits_restants_dans_tampon, &tailleBitsMot, &tampon);
+	display_output(code, &bits_restants_dans_tampon, &tailleBitsMot, &tampon, &spacing);
 
 }
