@@ -51,13 +51,14 @@ void display_output(int code, int *bits_restants_dans_tampon, int *tailleBitsMot
 	while(*bits_restants_dans_tampon >= 8)
 	{
 		resultat = (*tampon & 0xFF000000) >> 24;
+		//printf("||||||||%d||||||||||\n",resultat);
 		printf("%02x",resultat);
-		*spacing++;
+		/**spacing++;
 		if (*spacing >= 2)
 		{
 			printf(" ");
 			*spacing = 0;
-		}
+		}*/
 		*tampon = *tampon << 8;
 		*bits_restants_dans_tampon -= 8;
 	}
@@ -65,12 +66,12 @@ void display_output(int code, int *bits_restants_dans_tampon, int *tailleBitsMot
 	*tampon |= code << (32 - *tailleBitsMot - *bits_restants_dans_tampon);
 	resultat = (*tampon & 0xFF000000) >> 24;
 	printf("%02x",resultat);
-	*spacing++;
+	/**spacing++;
 	if (*spacing >= 2)
 	{
-		printf(" ");
+		printf("|");
 		*spacing = 0;
-	}
+	}*/
 	*tampon = *tampon << 8;
 	*bits_restants_dans_tampon += *tailleBitsMot - 8;
 }
