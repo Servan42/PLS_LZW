@@ -41,6 +41,7 @@ void decompression(int *taille, int *tab_entree, char *tab_sortie){
 	}*/
 
 	while(longueur!=(-1)){
+		printf("Itération : %d\n", i);
 		//printf("\n");
 		//printf("On rentre dans le while pour tab_entree de %d : %d\n", i, tab_entree[i]);
 		// printf("%s\n",);
@@ -62,10 +63,12 @@ void decompression(int *taille, int *tab_entree, char *tab_sortie){
 		else{
 			//printf("on rentre dans le else\n");
 			longueur2 = CodeVersLongueur(tab_entree[i2]);
-			free(w2);
-			w2 = malloc(longueur2*sizeof(uint8_t));
-			//printf("w2 = %p\n",w2);
-			CodeVersChaine(tab_entree[i2], w2);
+			if(longueur2!=-1){
+				free(w2);
+				w2 = malloc(longueur2*sizeof(uint8_t));
+				//printf("w2 = %p\n",w2);
+				CodeVersChaine(tab_entree[i2], w2);
+			}
 		}
 
 		//printf("On écrit dans le tab de sortie\n");
@@ -74,16 +77,21 @@ void decompression(int *taille, int *tab_entree, char *tab_sortie){
 			tab[compt] = w2[j];
 			compt++;
 		}
-		//a[0] = w2[0];
-		Inserer(SequenceVersCode(w, longueur),SequenceVersCode(a,1));	//ajout de mot au dictionnaire
+		printf("ok0\n");
 		longueur = CodeVersLongueur(tab_entree[i2]);
-		//printf("val w : %p\n",w);
-		free(w);
-		w = malloc(longueur*sizeof(uint8_t));
-		CodeVersChaine(tab_entree[i2], w);
-		i++;
+		if(longueur2!=-1){
+			a[0] = w2[0];
+			printf("ok1\n");
+			Inserer(SequenceVersCode(w, longueur),SequenceVersCode(a,1));	//ajout de mot au dictionnaire
+			//printf("val w : %p\n",w);
+			free(w);
+			w = malloc(longueur*sizeof(uint8_t));
+			CodeVersChaine(tab_entree[i2], w);
+		}
+		i += 1;
+		printf("tableau de sortie élément %d : %c\n",i, tab[i]);
 	}
-
+	printf("On arrive à la fin du while\n");
 	tab_sortie = malloc((compt-1)*sizeof(uint8_t));
 	for (int i = 0; i < compt; ++i)
 	{

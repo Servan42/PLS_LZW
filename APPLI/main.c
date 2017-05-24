@@ -111,7 +111,7 @@ int main(int argc, char *argv[]){
 
 				/* Appel à décompression */
 				printf("on va décompresser\n");
-				int tabZip1[25] = {66,111,110,106,111,117,114,32,98,97,110,100,101,115,32,268,32,115,97,10,111,112,269,10,256};
+				int tabZip1[25] = {66,111,110,106,111,117,114,32,98,97,110,100,101,115,32,268,32,115,97,108,111,112,269,10,256};
 				tailleTabUnzip = tailleInput;
 				tabUnzip = malloc(tailleTabUnzip*sizeof(char));
 				tailleInput = 25;

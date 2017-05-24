@@ -98,7 +98,7 @@ int CodeVersLongueur(Code code){
     printf("fin de tableau\n");
     return -1;
   }
-  printf("CODE : %d\n",code);
+  // printf("CODE : %d\n",code);
   return dico[code].longueur;
 }
 
@@ -114,13 +114,13 @@ void CodeVersChaine (Code code, uint8_t *val){
   int longueur = dico[code].longueur;
   //printf("Je lie, longueur = %d\n",*longueur);
   //free(val);
-  printf("code : %d\n", code);
+  // printf("code : %d\n", code);
   //printf("________________Adresse : %d\n",*val);
   for(int i=0;i<longueur;i++){
     val[i] = dico[code].mot[i];
-    printf("val[%d] = %c\n",i,dico[code].mot[i]);
+    // printf("val[%d] = %c\n",i,dico[code].mot[i]);
   }
-  printf("\n");
+  // printf("\n");
 }
 
 /**
