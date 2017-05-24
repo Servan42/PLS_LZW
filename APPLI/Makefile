@@ -4,8 +4,8 @@ FLAGS= -Wall -g
 OPTIONS=
 
 
-$(EXE) : main.o dictionnaire.o compression.o decompression.o
-	gcc -o $(EXE) main.o dictionnaire.o compression.o decompression.o
+$(EXE) : main.o dictionnaire.o compression.o decompression.o rle.o
+	gcc -o $(EXE) main.o dictionnaire.o compression.o decompression.o rle.o
 
 main.o : main.c dictionnaire.h compression.h decompression.h
 	gcc $(FLAGS) $(OPTIONS) -c main.c dictionnaire.h compression.h decompression.h
@@ -18,6 +18,9 @@ compression.o : compression.c compression.h dictionnaire.h decompression.h
 
 decompression.o : decompression.c compression.h dictionnaire.h decompression.h
 	gcc $(FLAGS) $(OPTIONS) -c decompression.c compression.h dictionnaire.h decompression.h
+
+rle.o : rle.c
+	gcc $(FLAGS) $(OPTIONS) -c rle.c rle.h
 
 clean :
 	rm -f -v *.gch *.o
