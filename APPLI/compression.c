@@ -91,11 +91,12 @@ void display_output(int code, int *bits_restants_dans_tampon, int *tailleBitsMot
 */
 void codage(char *input, int taille)
 {
+	int ind;
 	char *w;
 	char *wa;
 	char a[1];
 	int i, tailleW = 1, k = 0;
-
+	int output[2000];
 	int code;
 	int bits_restants_dans_tampon = 0;
 	int tailleBitsMot = NBBITDEPART;
@@ -109,6 +110,7 @@ void codage(char *input, int taille)
 	//printf("Taille : %d\n",taille);
 	for(i = 1 ; i < taille ; i++)
 	{
+		//printf("ok1");
 		//printf("Je rentre dans le for\n");
 		a[0] = input[i];
 
@@ -133,18 +135,26 @@ void codage(char *input, int taille)
 			//printf("La taille envoyée à SequenceVersCode : %d\n",tailleW);
 
 			code = SequenceVersCode(w,tailleW);
-			display_output(code, &bits_restants_dans_tampon, &tailleBitsMot, &tampon, &spacing);
 
+			display_output(code, &bits_restants_dans_tampon, &tailleBitsMot, &tampon, &spacing);
+			output[k] = SequenceVersCode(w,tailleW);
 			Inserer(SequenceVersCode(w,tailleW),SequenceVersCode(a,1));
 			tailleW = 1;
 
 			w = malloc(tailleW*sizeof(char));
 			w[0] = a[0];
 			k++;
+
 		}
 
 	}
 
+	output[k] = SequenceVersCode(w,tailleW);
+	output[k+1] = 256;
+	int tailsqle = k+2;
+	/*for(int i=0;i<tailsqle;i++){
+		printf("%d\n",output[i]);
+	}*/
 	code = SequenceVersCode(w,tailleW);
 	display_output(code, &bits_restants_dans_tampon, &tailleBitsMot, &tampon, &spacing);
 
