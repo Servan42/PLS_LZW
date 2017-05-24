@@ -40,7 +40,7 @@ void concat(char *w, int tailleW, char *a,char *out)
 * @param[in, out] taille Entier contant la taille du tableau input. A la fin, contient la taille du tableau output.
 * @param[in, out] output Tableau de caractère contenant la compression des données.
 */
-void codage(char *input, int *taille, char *output)
+void codage(char *input, int *taille, int *output)
 {
 	//char output[taille] à déclarer dans main TODO
  	//elem dico[MAX] -> déclaré dans dictionnaire.h
