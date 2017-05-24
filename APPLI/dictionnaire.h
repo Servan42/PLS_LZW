@@ -7,7 +7,7 @@
 #include "stdint.h"
 #include "string.h"
 
-#define MAX 5000
+#define MAX 65535
 
 typedef int Code;
 
@@ -24,9 +24,11 @@ void dico_print();
 
 void initialiser();
 
+int CodeVersLongueur(Code code);
+
 Code Inserer(Code prefixe,Code mono);
 
-void CodeVersChaine (Code code, int *longueur, uint8_t *val);
+void CodeVersChaine (Code code, uint8_t *val);
 
 Code SequenceVersCode (uint8_t *sequence, int longueur);
 

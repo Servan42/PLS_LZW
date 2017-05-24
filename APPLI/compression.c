@@ -112,7 +112,6 @@ void codage(char *input, int taille)
 		//printf("Je rentre dans le for\n");
 		a[0] = input[i];
 
-		// free(wa);
 		wa = malloc((tailleW+1)*sizeof(char));
 		concat(w,tailleW,a,wa);
 
@@ -138,7 +137,7 @@ void codage(char *input, int taille)
 
 			Inserer(SequenceVersCode(w,tailleW),SequenceVersCode(a,1));
 			tailleW = 1;
-			free(w);
+
 			w = malloc(tailleW*sizeof(char));
 			w[0] = a[0];
 			k++;
@@ -154,5 +153,6 @@ void codage(char *input, int taille)
 
 	printf("%c",(tampon & 0xFF000000) >> 32 - bits_restants_dans_tampon);
 	// printf(" 00\n");
-
+	free(w);
+	free(wa);
 }

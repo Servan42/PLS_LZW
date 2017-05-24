@@ -1,0 +1,123 @@
+on va décompresser
+code : 97
+val[0] = a
+
+caractere de w : a
+tabsortie 0 : a
+
+On rentre dans le while pour tab_entree de 0 : 97
+cond : 1
+on rentre dans le else
+code : 98
+val[0] = b
+
+On écrit dans le tab de sortie
+ 1 : b |
+code : 98
+val[0] = b
+
+
+On rentre dans le while pour tab_entree de 1 : 98
+cond : 1
+on rentre dans le else
+code : 99
+val[0] = c
+
+On écrit dans le tab de sortie
+ 2 : c |
+code : 99
+val[0] = c
+
+
+On rentre dans le while pour tab_entree de 2 : 99
+cond : 2
+on rentre dans le else
+code : 257
+val[0] = a
+val[1] = b
+
+On écrit dans le tab de sortie
+ 3 : a |
+ 4 : b |
+code : 257
+val[0] = a
+val[1] = b
+
+
+On rentre dans le while pour tab_entree de 3 : 257
+cond : 2
+on rentre dans le else
+code : 259
+val[0] = c
+val[1] = a
+
+On écrit dans le tab de sortie
+ 5 : c |
+ 6 : a |
+code : 259
+val[0] = c
+val[1] = a
+
+
+On rentre dans le while pour tab_entree de 4 : 259
+cond : 2
+on rentre dans le else
+code : 258
+val[0] = b
+val[1] = c
+
+On écrit dans le tab de sortie
+ 7 : b |
+ 8 : c |
+code : 258
+val[0] = b
+val[1] = c
+
+
+On rentre dans le while pour tab_entree de 5 : 258
+cond : 1
+on rentre dans le else
+code : 100
+val[0] = d
+
+On écrit dans le tab de sortie
+ 9 : d |
+code : 100
+val[0] = d
+
+
+On rentre dans le while pour tab_entree de 6 : 100
+cond : 1
+on rentre dans le else
+code : 101
+val[0] = e
+
+On écrit dans le tab de sortie
+ 10 : e |
+code : 101
+val[0] = e
+
+
+On rentre dans le while pour tab_entree de 7 : 101
+cond : 1
+on rentre dans le else
+code : 10
+val[0] = 
+
+
+On écrit dans le tab de sortie
+ 11 : 
+ |
+code : 10
+val[0] = 
+
+
+
+On rentre dans le while pour tab_entree de 8 : 10
+fin de tableau
+cond : -1
+on rentre dans le else
+fin de tableau
+code : 256
+
+On écrit dans le tab de sortie

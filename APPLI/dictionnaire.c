@@ -56,6 +56,9 @@ Code Inserer(Code prefixe,Code mono){
   //printf("Insérer appelé\n");
   //printf("Code pref : %d\n",prefixe);
   //printf("Code mono : %d\n",mono);
+  if(ind_dico >= MAX){
+    initialiser();
+  }
   char * str_pref = dico[prefixe].mot;
   int longueur_pref = dico[prefixe].longueur;
   char * str_mono = dico[mono].mot;
@@ -90,6 +93,15 @@ Code Inserer(Code prefixe,Code mono){
   return ind_dico-1;
 }
 
+int CodeVersLongueur(Code code){
+  if(code==256){
+    printf("fin de tableau\n");
+    return -1;
+  }
+  return dico[code].longueur;
+}
+
+
 /**
 * @fn uint8_t *CodeVersChaine (Code code, int *longueur)
 * @brief Prends un code et renvoiaut chercher la séquence correspondante
@@ -97,25 +109,17 @@ Code Inserer(Code prefixe,Code mono){
 * @return Il s'agit de la séquence correspondante
 */
 
-void CodeVersChaine (Code code, int *longueur, uint8_t *val){
-  *longueur = dico[code].longueur;
-  val = realloc(val,(*longueur)*sizeof(uint8_t));
-  #ifdef DEBUG
+void CodeVersChaine (Code code, uint8_t *val){
+  int longueur = dico[code].longueur;
+  //printf("Je lie, longueur = %d\n",*longueur);
+  //free(val);
   printf("code : %d\n", code);
-  #endif
-  for(int i=0;i<(*longueur);i++){
+  //printf("________________Adresse : %d\n",*val);
+  for(int i=0;i<longueur;i++){
     val[i] = dico[code].mot[i];
-    #ifdef DEBUG
-    printf("val[%d] = %c",i, val[i]);
-    #endif
+    printf("val[%d] = %c\n",i,dico[code].mot[i]);
   }
   printf("\n");
-  if(code==256){
-    #ifdef DEBUG
-    printf("fin de tableau\n");
-    #endif
-    *longueur = -1;
-  }
 }
 
 /**

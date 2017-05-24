@@ -17,60 +17,64 @@ void decompression(int *taille, int *tab_entree, char *tab_sortie){
 
 	initialiser(); //initialisation du dictionnaire
 
-	uint8_t *var = NULL;
 	int i = 0; //index du dict
 	int i2;
-	int *longueur = malloc(sizeof(int));
-	int *longueur2 = malloc(sizeof(int));
-	int *cond = malloc(sizeof(int));
+	int longueur=1;
+	int longueur2=1;
+	int cond;
 	uint8_t *tab = malloc((*taille) * sizeof(uint8_t));  //pas sur de la taille a alouer
-	uint8_t *a = malloc(sizeof(uint8_t)); // un octet déclarer en string
-	CodeVersChaine(tab_entree[i], longueur, a);
-	uint8_t *w = malloc(15*sizeof(char)); // chaine d octet
+	longueur = CodeVersLongueur(tab_entree[i]);
+	uint8_t *a = malloc(longueur*sizeof(uint8_t)); // un octet déclarer en string
+	CodeVersChaine(tab_entree[i], a);
+	uint8_t *w = malloc(longueur*sizeof(char)); // chaine d octet
 	w[0]=a[0];
 	printf("caractere de w : %c\n", w[0]);
-	uint8_t *w2 = malloc((*longueur)*sizeof(uint8_t));
+	uint8_t *w2 = malloc(longueur*sizeof(uint8_t));
 	tab[0] = w[0];
 	printf("tabsortie 0 : %c\n",tab[0]);
 	int compt = 1; //itérant du tab de sortie
 
 
-	i = 0;
-	CodeVersChaine(tab_entree[i], cond, var);
+	cond = CodeVersLongueur(tab_entree[i]);
 
-	while(*longueur!=(-1)){
+	while(longueur!=(-1)){
 		printf("\n");
 		printf("On rentre dans le while pour tab_entree de %d : %d\n", i, tab_entree[i]);
 		// printf("%s\n",);
 		i2 = i+1; // si ya un marqueur de fin sur le tableau en entrée
-
-		CodeVersChaine(tab_entree[i2], cond, var);
-		printf("cond : %d\n", *cond);
-		if(*cond==0){
+		cond = CodeVersLongueur(tab_entree[i2]);
+		printf("cond : %d\n", cond);
+		if(cond==0){
 			printf("on rentre dans le if\n");
+			longueur2 = CodeVersLongueur(tab_entree[i]);
 			free(w2);
-			w2 = malloc(sizeof(uint8_t));
-			CodeVersChaine(tab_entree[i],longueur2, w2);
+			w2 = malloc(longueur2*sizeof(uint8_t));
+			CodeVersChaine(tab_entree[i], w2);
+			longueur2++;
 			w2[i+1] = a[0];
-			w2[(*longueur2)+1] = a[0];
+			w2[longueur2] = a[0];
 		}
 
 		else{
 			printf("on rentre dans le else\n");
+			longueur2 = CodeVersLongueur(tab_entree[i2]);
 			free(w2);
-			w2 = malloc(sizeof(uint8_t));
-			CodeVersChaine(tab_entree[i2], longueur2, w2);
+			w2 = malloc(longueur2*sizeof(uint8_t));
+			CodeVersChaine(tab_entree[i2], w2);
 		}
 
 		printf("On écrit dans le tab de sortie\n");
-		for(int j = 0 ; j < *longueur2 ; j++){
+		for(int j = 0 ; j < longueur2 ; j++){
 			printf(" %d : %c |\n", compt, w2[j]);
 			tab[compt] = w2[j];
 			compt++;
 		}
 		a[0] = w2[0];
-		Inserer(SequenceVersCode(w, *longueur),SequenceVersCode(a,1));	//ajout de mot au dictionnaire
-		CodeVersChaine(tab_entree[i2], longueur, w);
+		Inserer(SequenceVersCode(w, longueur),SequenceVersCode(a,1));	//ajout de mot au dictionnaire
+		longueur = CodeVersLongueur(tab_entree[i2]);
+		free(w);
+		w = malloc(longueur*sizeof(uint8_t));
+		CodeVersChaine(tab_entree[i2], w);
 		i++;
 	}
 
