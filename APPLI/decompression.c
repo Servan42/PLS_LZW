@@ -6,10 +6,20 @@
 
 /***************** README ********************/
 /*
-Pour déocmpresser, on veut transformer notre tableau d'octet en un tableau de code (contenu par tab_entree) dans tab_conv.
+Exemple utiliser : voir main
+Pour décompresser, on veut transformer notre tableau d'octet (contenu par tab_entree) en un tableau de code int (contenue
+dans tab_conv)
+
 Pour cela on récupere d'abord la taille de tab_conv
+
 Puis on peux créer tab_conv et le remplir
+
 Pour finir on applique l'algo de décompression sur tab_conv
+
+FIXME ->
+	taille2 devrait valoir 5
+	boucle infini dans decompression
+	contenu de tab_conv normalement : {97, 98, 99, 100, 257, 100, 256} mais on a {0, 0, 97, 0}
 */
 
 
