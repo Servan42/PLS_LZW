@@ -45,7 +45,7 @@ void display_output(int code, int *bits_restants_dans_tampon, int *tailleBitsMot
 
 	while(code >= (1 << *tailleBitsMot)-1)
 	{
-		*tailleBitsMot++;
+		(*tailleBitsMot)++;
 	}
 
 	while(*bits_restants_dans_tampon >= 8)
