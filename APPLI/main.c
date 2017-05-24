@@ -78,6 +78,8 @@ int main(int argc, char *argv[]){
 
 	fclose(f2);
 
+	return 2;
+
 	/* Appel à décompression */
 
 	tailleTabUnzip = tailleInput;
