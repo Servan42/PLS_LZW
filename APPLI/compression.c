@@ -136,7 +136,7 @@ void codage(char *input, int taille)
 
 			code = SequenceVersCode(w,tailleW);
 
-			display_output(code, &bits_restants_dans_tampon, &tailleBitsMot, &tampon, &spacing);
+			//display_output(code, &bits_restants_dans_tampon, &tailleBitsMot, &tampon, &spacing);
 			output[k] = SequenceVersCode(w,tailleW);
 			Inserer(SequenceVersCode(w,tailleW),SequenceVersCode(a,1));
 			tailleW = 1;
@@ -152,16 +152,16 @@ void codage(char *input, int taille)
 	output[k] = SequenceVersCode(w,tailleW);
 	output[k+1] = 256;
 	int tailsqle = k+2;
-	/*for(int i=0;i<tailsqle;i++){
+	for(int i=0;i<tailsqle;i++){
 		printf("%d\n",output[i]);
-	}*/
+	}
 	code = SequenceVersCode(w,tailleW);
-	display_output(code, &bits_restants_dans_tampon, &tailleBitsMot, &tampon, &spacing);
+	//display_output(code, &bits_restants_dans_tampon, &tailleBitsMot, &tampon, &spacing);
 
 	code = 256;
-	display_output(code, &bits_restants_dans_tampon, &tailleBitsMot, &tampon, &spacing);
+	//display_output(code, &bits_restants_dans_tampon, &tailleBitsMot, &tampon, &spacing);
 
-	printf("%c",(tampon & 0xFF000000) >> 32 - bits_restants_dans_tampon);
+	//printf("%c",(tampon & 0xFF000000) >> 32 - bits_restants_dans_tampon);
 	// printf(" 00\n");
 	free(w);
 	free(wa);

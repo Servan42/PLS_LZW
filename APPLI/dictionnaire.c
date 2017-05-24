@@ -98,6 +98,7 @@ int CodeVersLongueur(Code code){
     printf("fin de tableau\n");
     return -1;
   }
+  printf("CODE : %d\n",code);
   return dico[code].longueur;
 }
 
@@ -161,7 +162,7 @@ Code SequenceVersCode (uint8_t *sequence, int longueur){
   }
   #ifdef DEBUG
   printf("Je renvoi le code : %d\n",result);
-  dico_print();
+  //dico_print();
   #endif
   return result;
 }

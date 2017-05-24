@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include "compression.h"
 #include "decompression.h"
+#include "dictionnaire.h"
 
 void dispError()
 {
@@ -20,9 +21,10 @@ int main(int argc, char *argv[]){
 	FILE *f = NULL;
 	int i = 0, tailleInput, tailleTabZip, tailleTabUnzip;
 	char c;
+	//int sip[2000];
 	char *input;
 	char *tabUnzip;
-	// int *tabZip1;
+	 int *tabZip1;
 
 	if(argc != 3){
 		dispError();
@@ -40,7 +42,7 @@ int main(int argc, char *argv[]){
 					printf("Erreur lors de l'ouverture du fichier %s\n",argv[2]);
 					return 1;
 				}
-				
+
 				/* Lecture du fichier */
 				while (!feof(f)) {
 					c = fgetc(f);
@@ -48,9 +50,9 @@ int main(int argc, char *argv[]){
 						i++;
 					}
 				}
-					
+
 				rewind(f);
-					
+
 				tailleInput = i;
 				input = malloc(tailleInput*sizeof(char));
 
@@ -62,62 +64,68 @@ int main(int argc, char *argv[]){
 						i++;
 					}
 				}
-				
+
 				fclose(f);
 
 				 /* Appel à codage */
 				tailleTabZip = tailleInput;
 				codage(input,tailleTabZip);
-
+				printf("DICTIONNAIRE APRES CODAGE :\n");
+				printf("-------------------------------\n");
+				dico_print();
+				printf("-------------------------------\n");
 				break;
-
 			case 'd':
 
 				/* Lecture du fichier à decompresser */
+				//printf("ok\n");
 
-				// f = fopen(argv[2], "r");
-				// if (f == NULL){
-				// 	printf("Erreur lors de l'ouverture du fichier %s\n",argv[2]);
-				// 	return 1;
-				// }
+				 /*f = fopen(argv[2], "r");
+				 if (f == NULL){
+				 	printf("Erreur lors de l'ouverture du fichier %s\n",argv[2]);
+				 	return 1;
+				 }
 
-				// while (!feof(f)) {
-				// 	c = fgetc(f);
-				// 	if(c != -1){
-				// 		i++;
-				// 	}
-				// }
-					
-				// rewind(f);
-					
-				// tailleInput = i;
-				// tabZip1 = malloc(tailleInput*sizeof(char));
+				 while (!feof(f)) {
+				 	c = fgetc(f);
+				 	if(c != -1){
+				 		i++;
+				 	}
+				 }
+				 rewind(f);
 
-				// i = 0;
-				// while (!feof(f)) {
-				// 	c = fgetc(f);
-				// 	if(c != -1){
-				// 		tabZip1[i] = c;
-				// 		i++;
-				// 	}
-				// }
+				 tailleInput = i;
+				 tabZip1 = malloc(tailleInput*sizeof(char));
 
-				// fclose(f);
+				 i = 0;
+				 while (!feof(f)) {
+				 	c = fgetc(f);
+				 	if(c != -1){
+				 		tabZip1[i] = c;
+				 		i++;
+				 	}
+				 }
+
+				 fclose(f);
+*/
 
 				/* Appel à décompression */
 				printf("on va décompresser\n");
-
-				int tabZip1[10] = {97, 98, 99, 257, 259, 258, 100, 101, 10, 256};
+				int tabZip1[25] = {66,111,110,106,111,117,114,32,98,97,110,100,101,115,32,268,32,115,97,10,111,112,269,10,256};
 				tailleTabUnzip = tailleInput;
 				tabUnzip = malloc(tailleTabUnzip*sizeof(char));
+				tailleInput = 25;
 				decompression(&tailleInput,tabZip1,tabUnzip);
-
+				printf("DICTIONNAIRE APRES DECODAGE :\n");
+				printf("-------------------------------\n");
+				dico_print();
+				printf("-------------------------------\n");
 				printf("on a décompressé\n");
 
 
 				for(int k = 0; k < tailleTabUnzip; k++)
 				{
-					printf("%c", tabUnzip[k]); 
+					printf("%c", tabUnzip[k]);
 				}
 
 
