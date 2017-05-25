@@ -10,16 +10,15 @@ Exemple utiliser : voir main
 Pour décompresser, on veut transformer notre tableau d'octet (contenu par tab_entree) en un tableau de code int (contenue
 dans tab_conv)
 
-Pour cela on récupere d'abord la taille de tab_conv
+Pour cela on récupere d'abord la taille de tab_conv -> foncitonne
 
 Puis on peux créer tab_conv et le remplir
 
 Pour finir on applique l'algo de décompression sur tab_conv
 
 FIXME ->
-	taille2 devrait valoir 5
 	boucle infini dans decompression
-	contenu de tab_conv normalement : {97, 98, 99, 100, 257, 100, 256} mais on a {0, 0, 97, 0}
+	contenu de tab_conv normalement : {97, 98, 99, 100, 257, 100, 256} mais on a {0, 97, 98, 99, 100, 1, 100, 0}
 */
 
 
@@ -36,7 +35,7 @@ void decompression(int *taille, int *tab_entree, char *tab_sortie){
 
 	#define NBBITDEPART 9
 
-	printf("On va créer le tableau");
+	// printf("On va créer le tableau\n\n");
 
 	int bits_restants_dans_tampon = 0, tailleBitsMot = NBBITDEPART;
 	uint32_t tampon = 0;
@@ -49,13 +48,16 @@ void decompression(int *taille, int *tab_entree, char *tab_sortie){
 	int taille2 = 0;
 	for (int k = 0; k < *taille; ++k)
 	{
-		printf("itération %d\n", k);
+		// printf("itération du for : %d\n", k);
+		// printf("on va ajouter au tampon : %x\n", tab_entree[k] << (32 - 8 - bits_restants_dans_tampon));
 		tampon |= tab_entree[k] << (32 - 8 - bits_restants_dans_tampon);
+		// printf("valeur de tampon en hexa : %x\n", tampon);
 		bits_restants_dans_tampon += 8;
 
 		while(bits_restants_dans_tampon >= tailleBitsMot)
 		{
-			printf("indexico : %d\n", indexdico);
+			// printf("Itération du while : %d\n", taille2);
+			// printf("indexico : %d\n", indexdico);
 			tampon <<= tailleBitsMot;
 			bits_restants_dans_tampon -= tailleBitsMot;
 			indexdico++;
@@ -63,15 +65,13 @@ void decompression(int *taille, int *tab_entree, char *tab_sortie){
 
 			if(indexdico >= (1 << tailleBitsMot)-1)
 			{
-				printf("On doit augmenter notre nombre de bits\n");
+				// printf("On doit augmenter notre nombre de bits\n");
 				tailleBitsMot++;
 				decalageMasque++;
 			}
 		}
-		printf("taille2 : %d\n", taille2);
-		k++;
 	}
-	taille2++;
+	printf("taille2 : %d\n", taille2);
 
 	// on remplit tab_conv pour récuper le tableau des index de chaque de code
 	indexdico = 257;
@@ -79,7 +79,8 @@ void decompression(int *taille, int *tab_entree, char *tab_sortie){
 	tailleBitsMot = NBBITDEPART;
 	tampon = 0;
 	decalageMasque = 0;
-	uint8_t *tab_conv = malloc(taille2*sizeof(char));
+	uint32_t *tab_conv = malloc(taille2*sizeof(uint32_t));
+	int k2 = 0;
 	for (int k = 0; k < *taille; ++k)
 	{
 		tampon |= tab_entree[k] << (32 - 8 - bits_restants_dans_tampon);
@@ -88,7 +89,7 @@ void decompression(int *taille, int *tab_entree, char *tab_sortie){
 		while(bits_restants_dans_tampon >= tailleBitsMot)
 		{
 			masque |= (0xFF800000 >> decalageMasque);
-			tab_conv[k] = (tampon & masque) >> (32 - tailleBitsMot);
+			tab_conv[k2] = (tampon & masque) >> (32 - tailleBitsMot);
 			tampon <<= tailleBitsMot;
 			bits_restants_dans_tampon -= tailleBitsMot;
 
@@ -102,8 +103,8 @@ void decompression(int *taille, int *tab_entree, char *tab_sortie){
 				tailleBitsMot++;
 				decalageMasque++;
 			}
+			k2++;
 		}
-		k++;
 	}
 	tab_conv[taille2-1] = 256;
 
@@ -194,7 +195,7 @@ void decompression(int *taille, int *tab_entree, char *tab_sortie){
 	for (int i = 0; i < compt; ++i)
 	{
 		tab_sortie[i] = tab[i];
-		// printf("tableau de sortie élément %d : %c\n",i, tab[i]);
+		printf("tableau de sortie élément %d : %c\n",i, tab[i]);
 	}
 	taille2 = compt;
 	//dico_print();
