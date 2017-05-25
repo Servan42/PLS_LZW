@@ -11,7 +11,7 @@ main.o : main.c dictionnaire.h compression.h decompression.h
 	gcc $(FLAGS) $(OPTIONS) -c main.c dictionnaire.h compression.h decompression.h
 
 dictionnaire.o : dictionnaire.c dictionnaire.h compression.h decompression.h
-	gcc $(FLAGS) $(OPTIONS) -c dictionnaire.c compression.h decompression.h
+	gcc $(FLAGS) $(OPTIONS) -c dictionnaire.c dictionnaire.h compression.h decompression.h
 
 compression.o : compression.c compression.h dictionnaire.h decompression.h
 	gcc $(FLGAS) $(OPTIONS) -c compression.c compression.h dictionnaire.h decompression.h
@@ -19,7 +19,7 @@ compression.o : compression.c compression.h dictionnaire.h decompression.h
 decompression.o : decompression.c compression.h dictionnaire.h decompression.h
 	gcc $(FLAGS) $(OPTIONS) -c decompression.c compression.h dictionnaire.h decompression.h
 
-rle.o : rle.c
+rle.o : rle.c rle.h
 	gcc $(FLAGS) $(OPTIONS) -c rle.c rle.h
 
 clean :
