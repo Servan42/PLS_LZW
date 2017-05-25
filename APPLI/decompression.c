@@ -1,202 +1,102 @@
-#include "decompression.h"
+//FIXME : Decompression bug au pout de 856 caractères OU fait de la merde sur le 848eme
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdint.h>
 #include "dictionnaire.h"
+#include "decompression.h"
 
-/***************** README ********************/
-/*
-Exemple utiliser : voir main
-Pour décompresser, on veut transformer notre tableau d'octet (contenu par tab_entree) en un tableau de code int (contenue
-dans tab_conv)
+#define NBBITDEPART 9
 
-Pour cela on récupere d'abord la taille de tab_conv -> foncitonne
+void ouiouioui(){}
 
-Puis on peux créer tab_conv et le remplir
+uint32_t binToCode(uint8_t input, int *bits_restants_dans_tampon, int *tailleBitsMot, uint32_t *tampon, uint32_t *masque, int *decalageMasque)
+{
+	uint32_t resultat = 0;
 
-Pour finir on applique l'algo de décompression sur tab_conv
+	*tampon |= input << (32 - 8 - *bits_restants_dans_tampon);
+	*bits_restants_dans_tampon += 8;
+	
+	if(*bits_restants_dans_tampon >= *tailleBitsMot)
+	{		
+		*masque |= (0xFF800000 >> *decalageMasque);
+		resultat = (*tampon & *masque) >> (32 - *tailleBitsMot);
+		*tampon <<= *tailleBitsMot;
+		*bits_restants_dans_tampon -= *tailleBitsMot;
+	}
 
-FIXME ->
-	boucle infini dans decompression
-	contenu de tab_conv normalement : {97, 98, 99, 100, 257, 100, 256} mais on a {0, 97, 98, 99, 100, 1, 100, 0}
-*/
+	return resultat;
+}
 
+void decompression(uint8_t *tab_entree, int taille){
 
-/**
-* @fn void decompression(int taille, char *tab_entree, char*tab_sortie)
-* @brief Algorithme de décompression LZW.
-* @param[in] entier contant la taille du tableau tab_entree.
-* @param[in] tab_entree Tableau de caractère contenant la totalité de l'information contenue dans le fichier à décompresser.
-* @param[in, out] tab_sortie Tableau de caractère contenant la décompression des données.
-*/
-void decompression(int *taille, int *tab_entree, char *tab_sortie){
+	int DEBUG = 509;
 
-	initialiser(); //initialisation du dictionnaire
-
-	#define NBBITDEPART 9
-
-	// printf("On va créer le tableau\n\n");
+	int i1, i2, k = 0, tailleW1 = 1, tailleW2;
+	uint8_t *w1;
+	uint8_t *w2;
+	uint8_t a[1];
 
 	int bits_restants_dans_tampon = 0, tailleBitsMot = NBBITDEPART;
 	uint32_t tampon = 0;
 	uint32_t masque = 0xFF800000;
-	int decalageMasque = 0; //tailleBitsMot - NBBITDEPART
-	int indexdico = 257;
+	int decalageMasque = 0; //tailleBitsMots - NBBITDEPART
 
-	/* ce for nous permet de recupérer la taille de tab_conv*/
+	initialiser();
 
-	int taille2 = 0;
-	for (int k = 0; k < *taille; ++k)
+	do
 	{
-		// printf("itération du for : %d\n", k);
-		// printf("on va ajouter au tampon : %x\n", tab_entree[k] << (32 - 8 - bits_restants_dans_tampon));
-		tampon |= tab_entree[k] << (32 - 8 - bits_restants_dans_tampon);
-		// printf("valeur de tampon en hexa : %x\n", tampon);
-		bits_restants_dans_tampon += 8;
+		i1 = binToCode(tab_entree[k], &bits_restants_dans_tampon, &tailleBitsMot, &tampon, &masque, &decalageMasque);
+		k++;
+	}
+	while(i1 == 0);
 
-		while(bits_restants_dans_tampon >= tailleBitsMot)
+	CodeVersChaine(i1,a);
+	w1 = malloc(tailleW1*sizeof(uint8_t));
+	w1[0] = a[0];
+	printf("%c", w1[0]);
+
+	while(k < taille)
+	{
+		i2 = 0;
+		do
 		{
-			// printf("Itération du while : %d\n", taille2);
-			// printf("indexico : %d\n", indexdico);
-			tampon <<= tailleBitsMot;
-			bits_restants_dans_tampon -= tailleBitsMot;
-			indexdico++;
-			taille2++;
-
-			if(indexdico >= (1 << tailleBitsMot)-1)
-			{
-				// printf("On doit augmenter notre nombre de bits\n");
-				tailleBitsMot++;
-				decalageMasque++;
-			}
+			i2 = binToCode(tab_entree[k], &bits_restants_dans_tampon, &tailleBitsMot, &tampon, &masque, &decalageMasque);
+			k++;
 		}
-	}
-	printf("taille2 : %d\n", taille2);
+		while(i2 == 0);
 
-	// on remplit tab_conv pour récuper le tableau des index de chaque de code
-	indexdico = 257;
-	bits_restants_dans_tampon = 0;
-	tailleBitsMot = NBBITDEPART;
-	tampon = 0;
-	decalageMasque = 0;
-	uint32_t *tab_conv = malloc(taille2*sizeof(uint32_t));
-	int k2 = 0;
-	for (int k = 0; k < *taille; ++k)
-	{
-		tampon |= tab_entree[k] << (32 - 8 - bits_restants_dans_tampon);
-		bits_restants_dans_tampon += 8;
-
-		while(bits_restants_dans_tampon >= tailleBitsMot)
+		if(i2 >= ind_dico)
+		{	
+			tailleW2 = CodeVersLongueur(i1) + 1;
+			w2 = malloc(tailleW2*sizeof(uint8_t));
+			CodeVersChaine(i1,w2);
+			w2[tailleW2-1] = a[0];
+		}
+		else
 		{
-			masque |= (0xFF800000 >> decalageMasque);
-			tab_conv[k2] = (tampon & masque) >> (32 - tailleBitsMot);
-			tampon <<= tailleBitsMot;
-			bits_restants_dans_tampon -= tailleBitsMot;
-
-			//l index nous permet de savoir quand on doit augmenter notre nbr de bits,
-			//
-			indexdico++;
-
-			if(indexdico >= (1 << tailleBitsMot)-1)
-			{
-				printf("On doit augmenter notre nombre de bits\n");
-				tailleBitsMot++;
-				decalageMasque++;
-			}
-			k2++;
+			tailleW2 = CodeVersLongueur(i2);
+			w2 = malloc(tailleW2*sizeof(uint8_t));
+			CodeVersChaine(i2,w2);
 		}
-	}
-	tab_conv[taille2-1] = 256;
 
-	printf("on a crée notre tableau intermediaire\n");
-	for (int i = 0; i < taille2; ++i)
-	{
-		printf(" valeur de tab_conv : %d\n", tab_conv[i]);
+		for(int i = 0; i < tailleW2; i++) printf("%c", w2[i]);
+
+		a[0] = w2[0];
+		if(Inserer(SequenceVersCode(w1,tailleW1),SequenceVersCode(a,1)) >= (1 << tailleBitsMot)-1)
+		{
+			tailleBitsMot++;
+			decalageMasque++;
+		}
+
+		i1 = i2;
+		tailleW1 = CodeVersLongueur(i1);
+		w1 = malloc(tailleW1*sizeof(uint8_t));
+		CodeVersChaine(i1,w1);
+
+		if(ind_dico == DEBUG) ouiouioui();
 	}
 
-
-	// on va récupérer les chaines à partir des codes de chaque indices de tab_conv
-	int i = 0; //index du dict
-	int i2;
-	int longueur=1;
-	int longueur2=1;
-	int cond;
-	uint8_t *tab = malloc(taille2* sizeof(uint8_t));  //pas sur de la taille a alouer
-	longueur = CodeVersLongueur(tab_conv[i]);
-	uint8_t *a = malloc(longueur*sizeof(uint8_t)); // un octet déclarer en string
-	CodeVersChaine(tab_conv[i], a);
-	uint8_t *w = malloc(longueur*sizeof(char)); // chaine d octet
-	w[0]=a[0];
-	//printf("caractere de w : %c\n", w[0]);
-	uint8_t *w2 = malloc(longueur*sizeof(uint8_t));
-	tab[0] = w[0];
-	//printf("tabsortie 0 : %c\n",tab[0]);
-	int compt = 1; //itérant du tab de sortie
-
-
-	/*cond = CodeVersLongueur(tab_conv[i]);
-	for(int l=0;l<200;l++){
-		printf("tab : %d\n",tab_conv[l]);
-	}*/
-
-	while(longueur!=(-1)){
-		// printf("Itération : %d\n", i);
-		//printf("\n");
-		//printf("On rentre dans le while pour tab_conv de %d : %d\n", i, tab_conv[i]);
-		// printf("%s\n",);
-		i2 = i+1; // si ya un marqueur de fin sur le tableau en entrée
-		cond = CodeVersLongueur(tab_conv[i2]);
-		//printf("cond : %d\n", cond);
-		if(cond==0){
-			//printf("on rentre dans le if\n");
-			longueur2 = CodeVersLongueur(tab_conv[i]);
-			free(w2);
-			w2 = malloc(longueur2*sizeof(uint8_t));
-			//printf("w2 = %p\n",w2);
-			CodeVersChaine(tab_conv[i], w2);
-			longueur2++;
-			w2[i+1] = a[0];
-			w2[longueur2] = a[0];
-		}
-
-		else{
-			//printf("on rentre dans le else\n");
-			longueur2 = CodeVersLongueur(tab_conv[i2]);
-			if(longueur2!=-1){
-				free(w2);
-				w2 = malloc(longueur2*sizeof(uint8_t));
-				//printf("w2 = %p\n",w2);
-				CodeVersChaine(tab_conv[i2], w2);
-			}
-		}
-
-		//printf("On écrit dans le tab de sortie\n");
-		for(int j = 0 ; j < longueur2 ; j++){
-			//printf(" %d : %c |\n", compt, w2[j]);
-			tab[compt] = w2[j];
-			compt++;
-		}
-		// printf("ok0\n");
-		longueur = CodeVersLongueur(tab_conv[i2]);
-		if(longueur2!=-1){
-			a[0] = w2[0];
-			// printf("ok1\n");
-			Inserer(SequenceVersCode(w, longueur),SequenceVersCode(a,1));	//ajout de mot au dictionnaire
-			//printf("val w : %p\n",w);
-			free(w);
-			w = malloc(longueur*sizeof(uint8_t));
-			CodeVersChaine(tab_conv[i2], w);
-		}
-		i += 1;
-		// printf("tableau de sortie élément %d : %c\n",i, tab[i]);
-	}
-	printf("On arrive à la fin du while\n");
-	tab_sortie = malloc((compt-1)*sizeof(uint8_t));
-	for (int i = 0; i < compt; ++i)
-	{
-		tab_sortie[i] = tab[i];
-		printf("tableau de sortie élément %d : %c\n",i, tab[i]);
-	}
-	taille2 = compt;
-	//dico_print();
 }
+
+		

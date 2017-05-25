@@ -5,6 +5,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include "compression.h"
 #include "decompression.h"
 #include "dictionnaire.h"
@@ -19,11 +20,10 @@ void dispError()
 int main(int argc, char *argv[]){
 
 	FILE *f = NULL;
-	int i = 0, tailleInput, tailleTabZip, tailleTabUnzip;
+	int i = 0, tailleInput;
 	char c;
-	//int sip[2000];
 	char *input;
-	char *tabUnzip;
+	uint8_t *inputZip;
 
 	if(argc != 3){
 		dispError();
@@ -67,19 +67,21 @@ int main(int argc, char *argv[]){
 				fclose(f);
 
 				 /* Appel à codage */
-				tailleTabZip = tailleInput;
-				codage(input,tailleTabZip);
-				printf("DICTIONNAIRE APRES CODAGE :\n");
-				printf("-------------------------------\n");
-				dico_print();
-				printf("-------------------------------\n");
+				
+				codage(input,tailleInput);
+
+				// printf("DICTIONNAIRE APRES CODAGE :\n");
+				// printf("-------------------------------\n");
+				// dico_print_small();
+				// printf("-------------------------------\n");
+				
 				break;
+
 			case 'd':
 
 				/* Lecture du fichier à decompresser */
-				//printf("ok\n");
 
-				 /*f = fopen(argv[2], "r");
+				 f = fopen(argv[2], "r");
 				 if (f == NULL){
 				 	printf("Erreur lors de l'ouverture du fichier %s\n",argv[2]);
 				 	return 1;
@@ -94,44 +96,27 @@ int main(int argc, char *argv[]){
 				 rewind(f);
 
 				 tailleInput = i;
-				 tabZip1 = malloc(tailleInput*sizeof(char));
+				 inputZip = malloc(tailleInput*sizeof(char));
 
 				 i = 0;
 				 while (!feof(f)) {
 				 	c = fgetc(f);
 				 	if(c != -1){
-				 		tabZip1[i] = c;
+				 		inputZip[i] = c;
 				 		i++;
 				 	}
 				 }
 
 				 fclose(f);
-*/
 
 				/* Appel à décompression */
-				printf("on va décompresser\n");
-				/* compressage de "abcdabd"
-					donne en héxa : 30 98 8c 66 48 09 92 00
-					soit en déci
-				*/
-				int tabZip1[8] = {48, 152, 140, 102, 72, 9, 146, 0};
-				// int tabZip1[25] = {66,111,110,106,111,117,114,32,98,97,110,100,101,115,32,268,32,115,97,108,111,112,269,10,256};
-				tailleTabUnzip = tailleInput;
-				tabUnzip = malloc(tailleTabUnzip*sizeof(char));
-				tailleInput = 8;
-				decompression(&tailleInput,tabZip1,tabUnzip);
-				printf("DICTIONNAIRE APRES DECODAGE :\n");
-				printf("-------------------------------\n");
-				// dico_print();
-				printf("-------------------------------\n");
-				printf("on a décompressé\n");
+				
+				decompression(inputZip,tailleInput);
 
-
-				for(int k = 0; k < tailleTabUnzip; k++)
-				{
-					printf("%c", tabUnzip[k]);
-				}
-
+				// printf("DICTIONNAIRE :\n");
+				// printf("-------------------------------\n");
+				// dico_print_small();
+				// printf("-------------------------------\n");
 
 				break;
 

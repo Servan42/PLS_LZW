@@ -2,10 +2,9 @@
 #ifndef DICTIONNAIRE_H
 #define DICTIONNAIRE_H
 
-#include "stdio.h"
-#include "stdlib.h"
-#include "stdint.h"
-#include "string.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
 
 #define MAX 65535
 
@@ -13,7 +12,7 @@ typedef int Code;
 
 typedef struct{
   int longueur;
-  char *mot;
+  unsigned char *mot;
 }elem;
 
 int ind_dico;
@@ -21,6 +20,7 @@ int ind_dico;
 elem dico[MAX];
 
 void dico_print();
+void dico_print_small();
 
 void initialiser();
 
