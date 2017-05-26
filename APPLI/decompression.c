@@ -19,7 +19,7 @@ uint32_t binToCode(uint8_t input, int *bits_restants_dans_tampon, int *tailleBit
 
 	if(*bits_restants_dans_tampon >= *tailleBitsMot)
 	{
-		printf("valaur de masque %x\n", *masque);
+		// printf("valaur de masque %x\n", *masque);
 		resultat = (*tampon & *masque) >> (32 - *tailleBitsMot);
 		*tampon <<= *tailleBitsMot;
 		*bits_restants_dans_tampon -= *tailleBitsMot;
@@ -59,7 +59,7 @@ void decompression(uint8_t *tab_entree, int taille){
 
 	while(k < taille)
 	{
-		printf("%d ", compt);
+		// printf("%d ", compt);
 		if(compt==255){
 		// printf("moment qui bug\n");
 		}
@@ -72,7 +72,7 @@ void decompression(uint8_t *tab_entree, int taille){
 		}
 		while(i2 == 0);
 
-		printf("i2 : %d et ind_dico : %d\n", i2, ind_dico);
+		// printf("i2 : %d et ind_dico : %d\n", i2, ind_dico);
 		if(i2 >= ind_dico)
 		{	
 			// printf("on rentre dans le if\n");
@@ -83,7 +83,7 @@ void decompression(uint8_t *tab_entree, int taille){
 		}
 		else
 		{
-			printf("on rentre dans le else\n");
+			// printf("on rentre dans le else\n");
 			tailleW2 = CodeVersLongueur(i2);
 			w2 = malloc(tailleW2*sizeof(uint8_t));
 			CodeVersChaine(i2,w2);
@@ -107,8 +107,8 @@ void decompression(uint8_t *tab_entree, int taille){
 		CodeVersChaine(i1,w1);
 
 		if(ind_dico == DEBUG) ouiouioui();
-		printf("a : %c w2 : %s, w : %s\n",a[0], w2, w1);
-		printf("\n");
+		// printf("a : %c w2 : %s, w : %s\n",a[0], w2, w1);
+		// printf("\n");
 	}
 
 }
