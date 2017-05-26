@@ -4,7 +4,7 @@
 #include "dictionnaire.h"
 
 void initialiser()
-{	
+{
 	ind_dico = 0;
 
 	for(ind_dico = 0; ind_dico < 256; ind_dico++)
