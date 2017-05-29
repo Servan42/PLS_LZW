@@ -34,24 +34,25 @@ Code Inserer(Code prefixe, Code mono)
 	dico[ind_dico].mot[i] = dico[mono].mot[0];
 	ind_dico++;
 
-/* Bornes du dico */
-	 if(ind_dico == (1 << 16)-10){
-	 	int longueur = dico[prefixe].longueur + dico[mono].longueur;
-	 	char *tab = malloc((dico[prefixe].longueur + 1)*sizeof(char));
-	 	for(i = 0; i < dico[prefixe].longueur; i++)
-	 	{
-	 		tab[i] = dico[prefixe].mot[i];
-	 	}
-	 	tab[i] = dico[mono].mot[0];
-	 	initialiser();
-	 	dico[ind_dico].longueur = longueur;
-	 	dico[ind_dico].mot = malloc(longueur*sizeof(char));
-	 	for(i = 0; i < longueur; i++)
-	 	{
-	 		dico[ind_dico].mot[i] = tab[i];
-	 	}
-	 	ind_dico++;
-	 }
+	/* Bornes du dico */
+	if(ind_dico == (1 << 16)-10){
+		printf("Je réinitialise\n");
+		int longueur = dico[prefixe].longueur + dico[mono].longueur;
+		char *tab = malloc((dico[prefixe].longueur + 1)*sizeof(char));
+		for(i = 0; i < dico[prefixe].longueur; i++)
+		{
+			tab[i] = dico[prefixe].mot[i];
+		}
+		tab[i] = dico[mono].mot[0];
+		initialiser();
+		dico[ind_dico].longueur = longueur;
+		dico[ind_dico].mot = malloc(longueur*sizeof(char));
+		for(i = 0; i < longueur; i++)
+		{
+			dico[ind_dico].mot[i] = tab[i];
+		}
+		ind_dico++;
+	}
 
 	return ind_dico-1;
 }

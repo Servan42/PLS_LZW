@@ -80,7 +80,7 @@ int main(int argc, char *argv[]){
 				tab_zip = malloc((*ind)*sizeof(int));
 				taille_zip = *ind;
 				for(int i=0;i<*ind;i++){
-					tab_zip[i] = tab[i];
+					printf("%d\n",tab[i]);
 				}
 				//printf("------------------------\n");
 
@@ -90,10 +90,10 @@ int main(int argc, char *argv[]){
 				//}
 				//printf("\n");
 
-				 printf("DICTIONNAIRE APRES CODAGE :\n");
+				 /*printf("DICTIONNAIRE APRES CODAGE :\n");
 				 printf("-------------------------------\n");
 				 dico_print_small();
-				 printf("-------------------------------\n");
+				 printf("-------------------------------\n");*/
 
 
 				break;
@@ -133,10 +133,10 @@ int main(int argc, char *argv[]){
 
 				decompression(inputZip,tailleInput);
 
-				 printf("DICTIONNAIRE :\n");
+				 /*printf("DICTIONNAIRE :\n");
 				 printf("-------------------------------\n");
 				 dico_print_small();
-				 printf("-------------------------------\n");
+				 printf("-------------------------------\n");*/
 
 				break;
 
