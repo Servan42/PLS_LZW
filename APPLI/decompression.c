@@ -7,11 +7,14 @@
 #include "decompression.h"
 
 #define NBBITDEPART 9
+//2287
 
+// void mark(){}
 
 uint32_t binToCode(uint8_t input, int *bits_restants_dans_tampon, int *tailleBitsMot, uint32_t *tampon, uint32_t *masque, int *decalageMasque)
 {
 	uint32_t resultat = 0;
+
 
 	*tampon |= input << (32 - 8 - *bits_restants_dans_tampon);
 	*bits_restants_dans_tampon += 8;
@@ -54,8 +57,13 @@ void decompression(uint8_t *tab_entree, int taille){
 	w1[0] = a[0];
 	printf("%c", w1[0]);
 
-	while(k < taille-1)
+	while(k < taille)
 	{
+
+		tab_entree[k] &= 0xFF; 
+		// printf("tab_entree[%d] : 0x%02x\n", k, tab_entree[k]);
+
+		// if (ind_dico == 2286) mark();
 		i2 = 0;
 		do
 		{

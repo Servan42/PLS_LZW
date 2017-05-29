@@ -19,7 +19,7 @@
 * @param[in] a Tableau de caractère de taille 1 contenant le caractère à concatener avec w.
 * @param[in, out] out Tableau de taille tailleW + 1 contenant la concaténation de w et a.
 */
-void concat(char *w, int tailleW, char *a,char *out)
+void concat(unsigned char *w, int tailleW, unsigned char *a,unsigned char *out)
 {
 	int i;
 	for(i = 0; i < tailleW; i++)
@@ -64,11 +64,11 @@ void display_output(int code, int *bits_restants_dans_tampon, int *tailleBitsMot
 * @param[in] input Tableau de caractère contenant la totalité de l'information contenue dans le fichier à compresser.
 * @param[in] taille Entier contant la taille du tableau input.
 */
-void codage(char *input, int taille)
+void codage(unsigned char *input, int taille)
 {
-	char *w;
-	char *wa;
-	char a[1];
+	unsigned char *w;
+	unsigned char *wa;
+	unsigned char a[1];
 	int i, tailleW = 1, k = 0;
 	int code;
 	int bits_restants_dans_tampon = 0;
@@ -107,7 +107,7 @@ void codage(char *input, int taille)
 
 			Inserer(SequenceVersCode(w,tailleW),SequenceVersCode(a,1));
 			tailleW = 1;
-
+			
 			w = malloc(tailleW*sizeof(char));
 			w[0] = a[0];
 			k++;
@@ -121,7 +121,7 @@ void codage(char *input, int taille)
 	code = 256;
 	display_output(code, &bits_restants_dans_tampon, &tailleBitsMot, &tampon);
 
-	printf("%c",(tampon & 0xFF000000) >> 32 - bits_restants_dans_tampon);
+	printf("%c",(tampon & 0xFF000000) >> (32 - bits_restants_dans_tampon));
 
 	free(w);
 	free(wa);
