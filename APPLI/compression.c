@@ -30,59 +30,25 @@ void concat(char *w, int tailleW, char *a,char *out)
 }
 
 /**
-* @fn void display_output(int code, int *bits_restants_dans_tampon, int *tailleBitsMot, uint32_t *tampon)
-* @brief Fonction qui met en forme l'affichage du tableau de code.
-* @param[in] code Entier correspondant a un index du dictionnaire.
-* @param[in,out] bits_restants_dans_tampon Entier représentant le nombre de bits libres dans le tampon.
-* @param[in,out] tailleBitsMot Entier représantant la taille des des mots binaires correspondant aux indexes du dictionnaire.
-* @param[in,out] tampon Entier représantant le tampon de sortie, dans le quel on stock/extrait les valeurs à afficher.
-* @param[in,out] spacing Entier permettant la gestion des espaces dans le format de sortie
-*/
-void display_output(int code, int *bits_restants_dans_tampon, int *tailleBitsMot, uint32_t *tampon)
-{
-	uint32_t resultat;
-
-	while(*bits_restants_dans_tampon >= 8)
-	{
-		resultat = (*tampon & 0xFF000000) >> 24;
-		//printf("%c",resultat);
-		*tampon = *tampon << 8;
-		*bits_restants_dans_tampon -= 8;
-	}
-
-	*tampon |= code << (32 - *tailleBitsMot - *bits_restants_dans_tampon);
-	resultat = (*tampon & 0xFF000000) >> 24;
-	//printf("%c",resultat);
-	*tampon = *tampon << 8;
-	*bits_restants_dans_tampon += *tailleBitsMot - 8;
-}
-
-
-/**
 * @fn void codage(char *input, int taille, char *output)
 * @brief Algorithme de compression LZW.
 * @param[in] input Tableau de caractère contenant la totalité de l'information contenue dans le fichier à compresser.
 * @param[in] taille Entier contant la taille du tableau input.
 */
-void codage(char *input, int taille, int *tab,int *lg)
+void codage(char *input, int taille)
 {
 	char *w;
 	char *wa;
 	char a[1];
 	int i, tailleW = 1, k = 0;
 	int code;
-	int bits_restants_dans_tampon = 0;
-	int tailleBitsMot = NBBITDEPART;
-	int tableau_code[MAX];
-	uint32_t tampon = 0;
-	int tmppp = 0;
 	initialiser();//ok
 
 	w = malloc(tailleW*sizeof(char));
 	w[0] = input[0];
 	for(i = 1 ; i < taille ; i++)
 	{
-		// if(i == 5429) {}
+
 		a[0] = input[i];
 
 		wa = malloc((tailleW+1)*sizeof(char));
@@ -97,15 +63,8 @@ void codage(char *input, int taille, int *tab,int *lg)
 		else
 		{
 			code = SequenceVersCode(w,tailleW);
-			tableau_code[tmppp] = code;
-			tmppp++;
-			display_output(code, &bits_restants_dans_tampon, &tailleBitsMot, &tampon);
 
-			while(ind_dico >= (1 << tailleBitsMot)-1)
-			{
-				(tailleBitsMot)++;
-				// printf("\n\nind_dico : %d | Augmentation de la taillebit à : %d\n\n",ind_dico,tailleBitsMot);
-			}
+			printf("%d\n",code);
 
 			Inserer(SequenceVersCode(w,tailleW),SequenceVersCode(a,1));
 			tailleW = 1;
@@ -117,30 +76,11 @@ void codage(char *input, int taille, int *tab,int *lg)
 
 	}
 	code = SequenceVersCode(w,tailleW);
-	tableau_code[tmppp] = code;
-	tmppp++;
-	display_output(code, &bits_restants_dans_tampon, &tailleBitsMot, &tampon);
-
+	printf("%d\n",code);
 	code = 256;
-	tableau_code[tmppp] = code;
-	tmppp++;
-	display_output(code, &bits_restants_dans_tampon, &tailleBitsMot, &tampon);
-
-	//printf("%c",(tampon & 0xFF000000) >> 32 - bits_restants_dans_tampon);
-
+	printf("%d\n",code);
 	free(w);
 	free(wa);
 
 	int m=0;
-	/*printf("Nombre de codes : %d\n",tmppp);
-	printf("TABLEAU DES CODES SORTIE COMPRESSION\n");
-	while(m<tmppp){
-		printf("%d\n",tableau_code[m]);
-		m++;
-	}
-	printf("------------------------------------\n");*/
-	*lg = tmppp;
-	for(int i=0;i<tmppp;i++){
-		tab[i] = tableau_code[i];
-	}
 }
