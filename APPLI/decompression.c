@@ -8,18 +8,17 @@
 
 #define NBBITDEPART 9
 
-void ouiouioui(){}
 
-uint32_t binToCode(uint8_t input, int *bits_restants_dans_tampon, int *tailleBitsMot, uint32_t *tampon, uint32_t *masque)
+uint32_t binToCode(uint8_t input, int *bits_restants_dans_tampon, int *tailleBitsMot, uint32_t *tampon, uint32_t *masque, int *decalageMasque)
 {
 	uint32_t resultat = 0;
 
 	*tampon |= input << (32 - 8 - *bits_restants_dans_tampon);
 	*bits_restants_dans_tampon += 8;
-
+	
 	if(*bits_restants_dans_tampon >= *tailleBitsMot)
-	{
-		// printf("valaur de masque %x\n", *masque);
+	{		
+		*masque |= (0xFF800000 >> *decalageMasque);
 		resultat = (*tampon & *masque) >> (32 - *tailleBitsMot);
 		*tampon <<= *tailleBitsMot;
 		*bits_restants_dans_tampon -= *tailleBitsMot;
@@ -30,10 +29,6 @@ uint32_t binToCode(uint8_t input, int *bits_restants_dans_tampon, int *tailleBit
 
 void decompression(uint8_t *tab_entree, int taille){
 
-
-	int DEBUG = 509;
-	int compt = 0;
-
 	int i1, i2, k = 0, tailleW1 = 1, tailleW2;
 	uint8_t *w1;
 	uint8_t *w2;
@@ -42,12 +37,14 @@ void decompression(uint8_t *tab_entree, int taille){
 	int bits_restants_dans_tampon = 0, tailleBitsMot = NBBITDEPART;
 	uint32_t tampon = 0;
 	uint32_t masque = 0xFF800000;
+	int decalageMasque = 0; //tailleBitsMots - NBBITDEPART
+	int ind_insertion;
 
 	initialiser();
 
 	do
 	{
-		i1 = binToCode(tab_entree[k], &bits_restants_dans_tampon, &tailleBitsMot, &tampon, &masque);
+		i1 = binToCode(tab_entree[k], &bits_restants_dans_tampon, &tailleBitsMot, &tampon, &masque, &decalageMasque);
 		k++;
 	}
 	while(i1 == 0);
@@ -57,25 +54,18 @@ void decompression(uint8_t *tab_entree, int taille){
 	w1[0] = a[0];
 	printf("%c", w1[0]);
 
-	while(k < taille)
+	while(k < taille-1)
 	{
-		// printf("%d ", compt);
-		if(compt==255){
-		// printf("moment qui bug\n");
-		}
-
 		i2 = 0;
 		do
 		{
-			i2 = binToCode(tab_entree[k], &bits_restants_dans_tampon, &tailleBitsMot, &tampon, &masque);
+			i2 = binToCode(tab_entree[k], &bits_restants_dans_tampon, &tailleBitsMot, &tampon, &masque, &decalageMasque);
 			k++;
 		}
 		while(i2 == 0);
 
-		// printf("i2 : %d et ind_dico : %d\n", i2, ind_dico);
 		if(i2 >= ind_dico)
 		{	
-			// printf("on rentre dans le if\n");
 			tailleW2 = CodeVersLongueur(i1) + 1;
 			w2 = malloc(tailleW2*sizeof(uint8_t));
 			CodeVersChaine(i1,w2);
@@ -83,22 +73,24 @@ void decompression(uint8_t *tab_entree, int taille){
 		}
 		else
 		{
-			// printf("on rentre dans le else\n");
 			tailleW2 = CodeVersLongueur(i2);
 			w2 = malloc(tailleW2*sizeof(uint8_t));
 			CodeVersChaine(i2,w2);
 		}
 
-		for(int i = 0; i < tailleW2; i++){
-			printf("%c", w2[i]);
+		for(int i = 0; i < tailleW2; i++) {
+			printf("%c", w2[i]); 
 		}
-		compt++;
+
 		a[0] = w2[0];
-		if(Inserer(SequenceVersCode(w1,tailleW1),SequenceVersCode(a,1)) >= (1 << tailleBitsMot)-1)
+
+		ind_insertion = Inserer(SequenceVersCode(w1,tailleW1),SequenceVersCode(a,1));
+		if(ind_insertion >= (1 << tailleBitsMot)-2)
 		{
 			tailleBitsMot++;
-			masque = masque >> 1;
-			masque += 0x80000000;
+			decalageMasque++;
+			// printf("\n\nind_dico : %d | Indice insertion : %d | Augmentation de la taillebit à : %d\n\n",ind_dico,ind_insertion,tailleBitsMot);
+
 		}
 
 		i1 = i2;
@@ -106,9 +98,8 @@ void decompression(uint8_t *tab_entree, int taille){
 		w1 = malloc(tailleW1*sizeof(uint8_t));
 		CodeVersChaine(i1,w1);
 
-		if(ind_dico == DEBUG) ouiouioui();
-		// printf("a : %c w2 : %s, w : %s\n",a[0], w2, w1);
-		// printf("\n");
 	}
 
 }
+
+		
