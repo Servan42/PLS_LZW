@@ -10,6 +10,9 @@
 #include "decompression.h"
 #include "dictionnaire.h"
 
+int *tab_zip;
+int taille_zip;
+
 void dispError()
 {
 	printf("Syntaxe : \n");
@@ -19,11 +22,12 @@ void dispError()
 
 int main(int argc, char *argv[]){
 
+	int tmp;
 	FILE *f = NULL;
 	int i = 0, tailleInput;
 	char c;
 	char *input;
-	uint8_t *inputZip;
+	int *inputZip;
 
 	if(argc != 3){
 		dispError();
@@ -67,20 +71,36 @@ int main(int argc, char *argv[]){
 				fclose(f);
 
 				 /* Appel à codage */
-				
-				codage(input,tailleInput);
 
-				// printf("DICTIONNAIRE APRES CODAGE :\n");
-				// printf("-------------------------------\n");
-				// dico_print_small();
-				// printf("-------------------------------\n");
-				
+				int *tab=malloc(MAX*sizeof(int));
+				int *ind=malloc(sizeof(int));
+				codage(input,tailleInput,tab,ind);
+
+				//printf("Codes que donne codage :\n");
+				tab_zip = malloc((*ind)*sizeof(int));
+				taille_zip = *ind;
+				for(int i=0;i<*ind;i++){
+					tab_zip[i] = tab[i];
+				}
+				//printf("------------------------\n");
+
+				//printf("Codes que donne codage :\n");
+				//for(int i=0;i<*ind;i++){
+					//printf("%d\n",tab_zip[i]);
+				//}
+				//printf("\n");
+
+				 printf("DICTIONNAIRE APRES CODAGE :\n");
+				 printf("-------------------------------\n");
+				 dico_print_small();
+				 printf("-------------------------------\n");
+
+
 				break;
 
 			case 'd':
 
 				/* Lecture du fichier à decompresser */
-
 				 f = fopen(argv[2], "r");
 				 if (f == NULL){
 				 	printf("Erreur lors de l'ouverture du fichier %s\n",argv[2]);
@@ -88,21 +108,21 @@ int main(int argc, char *argv[]){
 				 }
 
 				 while (!feof(f)) {
-				 	c = fgetc(f);
-				 	if(c != -1){
+				  fscanf(f,"%d",&tmp);
+				 	if(tmp != -1){
 				 		i++;
 				 	}
 				 }
 				 rewind(f);
 
 				 tailleInput = i;
-				 inputZip = malloc(tailleInput*sizeof(char));
+				 inputZip = malloc(tailleInput*sizeof(int));
 
 				 i = 0;
 				 while (!feof(f)) {
-				 	c = fgetc(f);
-				 	if(c != -1){
-				 		inputZip[i] = c;
+				 	fscanf(f,"%d",&tmp);
+				 	if(tmp != -1){
+				 		inputZip[i] = tmp;
 				 		i++;
 				 	}
 				 }
@@ -110,13 +130,13 @@ int main(int argc, char *argv[]){
 				 fclose(f);
 
 				/* Appel à décompression */
-				
+
 				decompression(inputZip,tailleInput);
 
-				// printf("DICTIONNAIRE :\n");
-				// printf("-------------------------------\n");
-				// dico_print_small();
-				// printf("-------------------------------\n");
+				 printf("DICTIONNAIRE :\n");
+				 printf("-------------------------------\n");
+				 dico_print_small();
+				 printf("-------------------------------\n");
 
 				break;
 

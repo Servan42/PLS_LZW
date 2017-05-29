@@ -45,14 +45,14 @@ void display_output(int code, int *bits_restants_dans_tampon, int *tailleBitsMot
 	while(*bits_restants_dans_tampon >= 8)
 	{
 		resultat = (*tampon & 0xFF000000) >> 24;
-		printf("%c",resultat);
+		//printf("%c",resultat);
 		*tampon = *tampon << 8;
 		*bits_restants_dans_tampon -= 8;
 	}
 
 	*tampon |= code << (32 - *tailleBitsMot - *bits_restants_dans_tampon);
 	resultat = (*tampon & 0xFF000000) >> 24;
-	printf("%c",resultat);
+	//printf("%c",resultat);
 	*tampon = *tampon << 8;
 	*bits_restants_dans_tampon += *tailleBitsMot - 8;
 }
@@ -64,7 +64,7 @@ void display_output(int code, int *bits_restants_dans_tampon, int *tailleBitsMot
 * @param[in] input Tableau de caractère contenant la totalité de l'information contenue dans le fichier à compresser.
 * @param[in] taille Entier contant la taille du tableau input.
 */
-void codage(char *input, int taille)
+void codage(char *input, int taille, int *tab,int *lg)
 {
 	char *w;
 	char *wa;
@@ -73,8 +73,9 @@ void codage(char *input, int taille)
 	int code;
 	int bits_restants_dans_tampon = 0;
 	int tailleBitsMot = NBBITDEPART;
+	int tableau_code[MAX];
 	uint32_t tampon = 0;
-
+	int tmppp = 0;
 	initialiser();//ok
 
 	w = malloc(tailleW*sizeof(char));
@@ -96,7 +97,8 @@ void codage(char *input, int taille)
 		else
 		{
 			code = SequenceVersCode(w,tailleW);
-
+			tableau_code[tmppp] = code;
+			tmppp++;
 			display_output(code, &bits_restants_dans_tampon, &tailleBitsMot, &tampon);
 
 			while(ind_dico >= (1 << tailleBitsMot)-1)
@@ -114,15 +116,31 @@ void codage(char *input, int taille)
 		}
 
 	}
-
 	code = SequenceVersCode(w,tailleW);
+	tableau_code[tmppp] = code;
+	tmppp++;
 	display_output(code, &bits_restants_dans_tampon, &tailleBitsMot, &tampon);
 
 	code = 256;
+	tableau_code[tmppp] = code;
+	tmppp++;
 	display_output(code, &bits_restants_dans_tampon, &tailleBitsMot, &tampon);
 
-	printf("%c",(tampon & 0xFF000000) >> 32 - bits_restants_dans_tampon);
+	//printf("%c",(tampon & 0xFF000000) >> 32 - bits_restants_dans_tampon);
 
 	free(w);
 	free(wa);
+
+	int m=0;
+	/*printf("Nombre de codes : %d\n",tmppp);
+	printf("TABLEAU DES CODES SORTIE COMPRESSION\n");
+	while(m<tmppp){
+		printf("%d\n",tableau_code[m]);
+		m++;
+	}
+	printf("------------------------------------\n");*/
+	*lg = tmppp;
+	for(int i=0;i<tmppp;i++){
+		tab[i] = tableau_code[i];
+	}
 }

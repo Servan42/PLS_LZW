@@ -8,16 +8,18 @@
 
 #define NBBITDEPART 9
 
+void MARK(){
 
+}
 uint32_t binToCode(uint8_t input, int *bits_restants_dans_tampon, int *tailleBitsMot, uint32_t *tampon, uint32_t *masque, int *decalageMasque)
 {
 	uint32_t resultat = 0;
 
 	*tampon |= input << (32 - 8 - *bits_restants_dans_tampon);
 	*bits_restants_dans_tampon += 8;
-	
+
 	if(*bits_restants_dans_tampon >= *tailleBitsMot)
-	{		
+	{
 		*masque |= (0xFF800000 >> *decalageMasque);
 		resultat = (*tampon & *masque) >> (32 - *tailleBitsMot);
 		*tampon <<= *tailleBitsMot;
@@ -27,8 +29,7 @@ uint32_t binToCode(uint8_t input, int *bits_restants_dans_tampon, int *tailleBit
 	return resultat;
 }
 
-void decompression(uint8_t *tab_entree, int taille){
-
+void decompression(int *tab, int lg){
 	int i1, i2, k = 0, tailleW1 = 1, tailleW2;
 	uint8_t *w1;
 	uint8_t *w2;
@@ -39,33 +40,51 @@ void decompression(uint8_t *tab_entree, int taille){
 	uint32_t masque = 0xFF800000;
 	int decalageMasque = 0; //tailleBitsMots - NBBITDEPART
 	int ind_insertion;
+	uint32_t codes_decomp[MAX];
+	int tmp = 0;
+
+	/*for(int j=0;j<lg;j++){
+		printf("%d\n",tab[j]);
+	}*/
 
 	initialiser();
 
-	do
+	/*do
 	{
 		i1 = binToCode(tab_entree[k], &bits_restants_dans_tampon, &tailleBitsMot, &tampon, &masque, &decalageMasque);
 		k++;
 	}
-	while(i1 == 0);
+	while(i1 == 0);*/
+	i1 = tab[k];
+	k++;
+	codes_decomp[tmp] = i1;
+	tmp++;
 
 	CodeVersChaine(i1,a);
 	w1 = malloc(tailleW1*sizeof(uint8_t));
 	w1[0] = a[0];
 	printf("%c", w1[0]);
 
-	while(k < taille-1)
+	while(k < lg)
 	{
 		i2 = 0;
-		do
+		/*do
 		{
 			i2 = binToCode(tab_entree[k], &bits_restants_dans_tampon, &tailleBitsMot, &tampon, &masque, &decalageMasque);
 			k++;
 		}
-		while(i2 == 0);
+		while(i2 == 0);*/
+		i2 = tab[k];
+		if(i2==33){
+			MARK();
+		}
+		//printf("i2 = %d\n",tab[k]);
+		k++;
+		codes_decomp[tmp] = i2;
+		tmp++;
 
 		if(i2 >= ind_dico)
-		{	
+		{
 			tailleW2 = CodeVersLongueur(i1) + 1;
 			w2 = malloc(tailleW2*sizeof(uint8_t));
 			CodeVersChaine(i1,w2);
@@ -79,7 +98,7 @@ void decompression(uint8_t *tab_entree, int taille){
 		}
 
 		for(int i = 0; i < tailleW2; i++) {
-			printf("%c", w2[i]); 
+			printf("%c", w2[i]);
 		}
 
 		a[0] = w2[0];
@@ -89,8 +108,7 @@ void decompression(uint8_t *tab_entree, int taille){
 		{
 			tailleBitsMot++;
 			decalageMasque++;
-			// printf("\n\nind_dico : %d | Indice insertion : %d | Augmentation de la taillebit à : %d\n\n",ind_dico,ind_insertion,tailleBitsMot);
-
+			//printf("\n\nind_dico : %d | Indice insertion : %d | Augmentation de la taillebit à : %d\n\n",ind_dico,ind_insertion,tailleBitsMot);
 		}
 
 		i1 = i2;
@@ -100,6 +118,9 @@ void decompression(uint8_t *tab_entree, int taille){
 
 	}
 
+	/*printf("CODES DECOMPRESSION\n");
+	for(int i=0;i<tmp;i++){
+		printf("%d\n",codes_decomp[i]);
+	}
+	printf("-------------------\n");*/
 }
-
-		
