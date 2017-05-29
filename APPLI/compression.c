@@ -42,11 +42,6 @@ void display_output(int code, int *bits_restants_dans_tampon, int *tailleBitsMot
 {
 	uint32_t resultat;
 
-	while(code >= (1 << *tailleBitsMot)-1)
-	{
-		(*tailleBitsMot)++;
-	}
-
 	while(*bits_restants_dans_tampon >= 8)
 	{
 		resultat = (*tampon & 0xFF000000) >> 24;
@@ -61,6 +56,7 @@ void display_output(int code, int *bits_restants_dans_tampon, int *tailleBitsMot
 	*tampon = *tampon << 8;
 	*bits_restants_dans_tampon += *tailleBitsMot - 8;
 }
+
 
 /**
 * @fn void codage(char *input, int taille, char *output)
@@ -85,6 +81,7 @@ void codage(char *input, int taille)
 	w[0] = input[0];
 	for(i = 1 ; i < taille ; i++)
 	{
+		// if(i == 5429) {}
 		a[0] = input[i];
 
 		wa = malloc((tailleW+1)*sizeof(char));
@@ -101,6 +98,13 @@ void codage(char *input, int taille)
 			code = SequenceVersCode(w,tailleW);
 
 			display_output(code, &bits_restants_dans_tampon, &tailleBitsMot, &tampon);
+
+			while(ind_dico >= (1 << tailleBitsMot)-1)
+			{
+				(tailleBitsMot)++;
+				// printf("\n\nind_dico : %d | Augmentation de la taillebit à : %d\n\n",ind_dico,tailleBitsMot);
+			}
+
 			Inserer(SequenceVersCode(w,tailleW),SequenceVersCode(a,1));
 			tailleW = 1;
 
