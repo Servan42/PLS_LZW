@@ -1,3 +1,6 @@
-void rle(char *fichier);
+#include <stdio.h>
+#include <stdlib.h>
 
-void elr(char *fichier);
+void rle(FILE *f);
+
+void elr(FILE *f);

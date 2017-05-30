@@ -9,6 +9,7 @@
 #include "compression.h"
 #include "decompression.h"
 #include "dictionnaire.h"
+#include "rle.h"
 
 void dispError()
 {
@@ -20,6 +21,7 @@ void dispError()
 int main(int argc, char *argv[]){
 
 	FILE *f = NULL;
+	FILE *f2 = NULL;
 	int i = 0, tailleInput;
 	uint8_t c;
 	uint8_t *input;
@@ -36,13 +38,16 @@ int main(int argc, char *argv[]){
 		{
 			case 'c':
 
-				f = fopen(argv[2],"r");
-				if (f == NULL){
+				f2 = fopen(argv[2],"r");
+				if (f2 == NULL){
 					printf("Erreur lors de l'ouverture du fichier %s\n",argv[2]);
 					return 1;
 				}
+				rle(f2);
+				fclose(f2);
 
 				/* Lecture du fichier */
+				f = fopen("rle", "r");
 				while (!feof(f)) {
 					c = fgetc(f);
 					if(c != -1){
@@ -112,6 +117,10 @@ int main(int argc, char *argv[]){
 				/* Appel à décompression */
 				
 				decompression(inputZip,tailleInput);
+
+				f2 = fopen("elr", "r");
+				elr(f2);
+				fclose(f2);
 
 				// printf("DICTIONNAIRE :\n");
 				// printf("-------------------------------\n");

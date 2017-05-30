@@ -5,6 +5,8 @@ OPTIONS=
 
 
 $(EXE) : main.o dictionnaire.o compression.o decompression.o rle.o
+	touch rle
+	touch elr
 	gcc -o $(EXE) main.o dictionnaire.o compression.o decompression.o rle.o
 
 main.o : main.c dictionnaire.h compression.h decompression.h
@@ -30,4 +32,6 @@ cleanall : clean
 	rm -f -v $(EXE)
 	rm -f -v zip
 	rm -f -v unzip
+	rm -f -v rle
+	rm -f -v elr
 .PHONY : cleanall

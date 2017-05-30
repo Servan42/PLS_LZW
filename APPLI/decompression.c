@@ -34,6 +34,9 @@ uint32_t binToCode(uint8_t input, int *bits_restants_dans_tampon, int *tailleBit
 
 void decompression(uint8_t *tab_entree, int taille){
 
+	FILE *f = NULL;
+	f = fopen("elr", "w");
+
 	uint32_t i1, i2, k = 0, tailleW1 = 1, tailleW2;
 	uint8_t *w1;
 	uint8_t *w2;
@@ -57,7 +60,8 @@ void decompression(uint8_t *tab_entree, int taille){
 	CodeVersChaine(i1,a);
 	w1 = malloc(tailleW1*sizeof(uint8_t));
 	w1[0] = a[0];
-	printf("%c", w1[0]);
+	fputc(w1[0], f);
+	// printf("%c", w1[0]);
 
 	while(i2 != 256 && k < taille)
 	{
@@ -89,7 +93,8 @@ void decompression(uint8_t *tab_entree, int taille){
 		}
 
 		for(int i = 0; i < tailleW2; i++) {
-			printf("%c", w2[i]); 
+			// printf("%c", w2[i]);
+			fputc(w2[i], f);
 		}
 
 		a[0] = w2[0];
@@ -108,6 +113,8 @@ void decompression(uint8_t *tab_entree, int taille){
 		w1 = malloc(tailleW1*sizeof(uint8_t));
 		CodeVersChaine(i1,w1);
 	}
+
+	fclose(f);
 
 }
 
