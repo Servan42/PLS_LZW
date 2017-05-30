@@ -107,12 +107,14 @@ void dico_print_small()
 {
 	for(int i = 257; i < ind_dico; i ++)
 	{
+		// if(dico[i].mot[0] == 'v'){ 
 		printf("%i : ",i );
 		for(int j = 0; j < dico[i].longueur; j++)
 		{
 			printf("'%c'(%i)",dico[i].mot[j],dico[i].mot[j]);
 		}
 		printf("\n");
+		// }
 	}
 }
 

@@ -8,7 +8,7 @@
 
 #define MAX 65535
 
-typedef int Code;
+typedef uint32_t Code;
 
 typedef struct{
   int longueur;

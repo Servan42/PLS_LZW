@@ -21,8 +21,8 @@ int main(int argc, char *argv[]){
 
 	FILE *f = NULL;
 	int i = 0, tailleInput;
-	char c;
-	char *input;
+	uint8_t c;
+	uint8_t *input;
 	uint8_t *inputZip;
 
 	if(argc != 3){
@@ -53,7 +53,7 @@ int main(int argc, char *argv[]){
 				rewind(f);
 
 				tailleInput = i;
-				input = malloc(tailleInput*sizeof(char));
+				input = malloc(tailleInput*sizeof(uint8_t));
 
 				i = 0;
 				while (!feof(f)) {
@@ -96,7 +96,7 @@ int main(int argc, char *argv[]){
 				 rewind(f);
 
 				 tailleInput = i;
-				 inputZip = malloc(tailleInput*sizeof(char));
+				 inputZip = malloc(tailleInput*sizeof(uint8_t));
 
 				 i = 0;
 				 while (!feof(f)) {

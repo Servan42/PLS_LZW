@@ -8,6 +8,8 @@
 
 #define NBBITDEPART 9
 //2287
+//2243
+//2042
 
 // void mark(){}
 
@@ -32,7 +34,7 @@ uint32_t binToCode(uint8_t input, int *bits_restants_dans_tampon, int *tailleBit
 
 void decompression(uint8_t *tab_entree, int taille){
 
-	int i1, i2, k = 0, tailleW1 = 1, tailleW2;
+	uint32_t i1, i2, k = 0, tailleW1 = 1, tailleW2;
 	uint8_t *w1;
 	uint8_t *w2;
 	uint8_t a[1];
@@ -57,13 +59,13 @@ void decompression(uint8_t *tab_entree, int taille){
 	w1[0] = a[0];
 	printf("%c", w1[0]);
 
-	while(k < taille)
+	while(i2 != 256 && k < taille)
 	{
 
 		tab_entree[k] &= 0xFF; 
 		// printf("tab_entree[%d] : 0x%02x\n", k, tab_entree[k]);
 
-		// if (ind_dico == 2286) mark();
+		// if (ind_dico == 2285) mark();
 		i2 = 0;
 		do
 		{
@@ -105,7 +107,6 @@ void decompression(uint8_t *tab_entree, int taille){
 		tailleW1 = CodeVersLongueur(i1);
 		w1 = malloc(tailleW1*sizeof(uint8_t));
 		CodeVersChaine(i1,w1);
-
 	}
 
 }

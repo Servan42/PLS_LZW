@@ -3,8 +3,8 @@
 
 #include <stdint.h>
 
-void concat(char *w, int tailleW, char *a,char *out);
+void concat(uint8_t *w, int tailleW, uint8_t *a, uint8_t *out);
 void display_output(int code, int *bits_restants_dans_tampon, int *tailleBitsMot, uint32_t *tampon);
-void codage(char *input, int taille);
+void codage(uint8_t *input, int taille);
 
 #endif 
