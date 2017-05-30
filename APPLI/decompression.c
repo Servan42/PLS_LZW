@@ -57,7 +57,7 @@ void decompression(uint8_t *tab_entree, int taille){
 	}
 	while(i1 == 0);
 
-	//printf("%d\n",i1);
+	printf("%d\n",i1);
 	CodeVersChaine(i1,a);
 	w1 = malloc(tailleW1*sizeof(uint8_t));
 	w1[0] = a[0];
@@ -68,9 +68,7 @@ void decompression(uint8_t *tab_entree, int taille){
 	{
 
 		tab_entree[k] &= 0xFF;
-		// printf("tab_entree[%d] : 0x%02x\n", k, tab_entree[k]);
 
-		// if (ind_dico == 2285) mark();
 		i2 = 0;
 		do
 		{
@@ -119,8 +117,6 @@ void decompression(uint8_t *tab_entree, int taille){
 		w1 = malloc(tailleW1*sizeof(uint8_t));
 		CodeVersChaine(i1,w1);
 	}
-
-	fputc('\n',f);
 
 	fclose(f);
 
