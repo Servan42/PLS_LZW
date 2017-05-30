@@ -82,8 +82,7 @@ void codage(uint8_t *input, int taille)
 		}
 
 	}
-	code = SequenceVersCode(w,tailleW);
-	printf("%d\n",code);
+
 	code = 256;
 	printf("%d\n",code);
 	free(w);
