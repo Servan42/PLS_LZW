@@ -4,7 +4,7 @@
 #include "dictionnaire.h"
 
 void initialiser()
-{	
+{
 	ind_dico = 0;
 
 	for(ind_dico = 0; ind_dico < 256; ind_dico++)
@@ -35,23 +35,23 @@ Code Inserer(Code prefixe, Code mono)
 	ind_dico++;
 
 /* Bornes du dico */
-	// if(ind_dico == (1 << 16)-10){
-	// 	int longueur = dico[prefixe].longueur + dico[mono].longueur;
-	// 	char *tab = malloc((dico[prefixe].longueur + 1)*sizeof(char));
-	// 	for(i = 0; i < dico[prefixe].longueur; i++)
-	// 	{
-	// 		tab[i] = dico[prefixe].mot[i];
-	// 	}
-	// 	tab[i] = dico[mono].mot[0];
-	// 	initialiser();
-	// 	dico[ind_dico].longueur = longueur;
-	// 	dico[ind_dico].mot = malloc(longueur*sizeof(char));
-	// 	for(i = 0; i < longueur; i++)
-	// 	{
-	// 		dico[ind_dico].mot[i] = tab[i];
-	// 	}
-	// 	ind_dico++;
-	// }
+	 if(ind_dico >= MAX){
+	 	int longueur = dico[prefixe].longueur + dico[mono].longueur;
+	 	char *tab = malloc((dico[prefixe].longueur + 1)*sizeof(char));
+	 	for(i = 0; i < dico[prefixe].longueur; i++)
+	 	{
+	 		tab[i] = dico[prefixe].mot[i];
+	 	}
+	 	tab[i] = dico[mono].mot[0];
+	 	initialiser();
+	 	dico[ind_dico].longueur = longueur;
+	 	dico[ind_dico].mot = malloc(longueur*sizeof(char));
+	 	for(i = 0; i < longueur; i++)
+	 	{
+	 		dico[ind_dico].mot[i] = tab[i];
+	 	}
+	 	ind_dico++;
+	 }
 
 	return ind_dico-1;
 }
@@ -107,7 +107,7 @@ void dico_print_small()
 {
 	for(int i = 257; i < ind_dico; i ++)
 	{
-		// if(dico[i].mot[0] == 'v'){ 
+		// if(dico[i].mot[0] == 'v'){
 		printf("%i : ",i );
 		for(int j = 0; j < dico[i].longueur; j++)
 		{

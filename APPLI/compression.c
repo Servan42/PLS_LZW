@@ -100,6 +100,7 @@ void codage(uint8_t *input, int taille)
 			code = SequenceVersCode(w,tailleW);
 
 			display_output(code, &bits_restants_dans_tampon, &tailleBitsMot, &tampon);
+			//printf("%d\n",code);
 
 			while(ind_dico >= (1 << tailleBitsMot)-1)
 			{
@@ -109,7 +110,6 @@ void codage(uint8_t *input, int taille)
 
 			Inserer(SequenceVersCode(w,tailleW),SequenceVersCode(a,1));
 			tailleW = 1;
-			
 			w = malloc(tailleW*sizeof(uint8_t));
 			w[0] = a[0];
 			k++;
@@ -118,10 +118,11 @@ void codage(uint8_t *input, int taille)
 	}
 
 	code = SequenceVersCode(w,tailleW);
+	//printf("%d\n",code);
 	display_output(code, &bits_restants_dans_tampon, &tailleBitsMot, &tampon);
-
 	code = 256;
 	display_output(code, &bits_restants_dans_tampon, &tailleBitsMot, &tampon);
+	//printf("%d\n",code);
 
 	printf("%c",(tampon & 0xFF000000) >> (32 - bits_restants_dans_tampon));
 

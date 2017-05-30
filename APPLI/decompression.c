@@ -20,9 +20,9 @@ uint32_t binToCode(uint8_t input, int *bits_restants_dans_tampon, int *tailleBit
 
 	*tampon |= input << (32 - 8 - *bits_restants_dans_tampon);
 	*bits_restants_dans_tampon += 8;
-	
+
 	if(*bits_restants_dans_tampon >= *tailleBitsMot)
-	{		
+	{
 		*masque |= (0xFF800000 >> *decalageMasque);
 		resultat = (*tampon & *masque) >> (32 - *tailleBitsMot);
 		*tampon <<= *tailleBitsMot;
@@ -57,16 +57,17 @@ void decompression(uint8_t *tab_entree, int taille){
 	}
 	while(i1 == 0);
 
+	//printf("%d\n",i1);
 	CodeVersChaine(i1,a);
 	w1 = malloc(tailleW1*sizeof(uint8_t));
 	w1[0] = a[0];
 	fputc(w1[0], f);
-	// printf("%c", w1[0]);
+	 //printf("%c", w1[0]);
 
 	while(i2 != 256 && k < taille)
 	{
 
-		tab_entree[k] &= 0xFF; 
+		tab_entree[k] &= 0xFF;
 		// printf("tab_entree[%d] : 0x%02x\n", k, tab_entree[k]);
 
 		// if (ind_dico == 2285) mark();
@@ -76,10 +77,15 @@ void decompression(uint8_t *tab_entree, int taille){
 			i2 = binToCode(tab_entree[k], &bits_restants_dans_tampon, &tailleBitsMot, &tampon, &masque, &decalageMasque);
 			k++;
 		}
-		while(i2 == 0);
+		while((i2 == 0)&&(k<taille));
+		if((k+1)==taille){
+			i2 = 256;
+		}
+		//printf("%d\n",i2);
+
 
 		if(i2 >= ind_dico)
-		{	
+		{
 			tailleW2 = CodeVersLongueur(i1) + 1;
 			w2 = malloc(tailleW2*sizeof(uint8_t));
 			CodeVersChaine(i1,w2);
@@ -93,7 +99,7 @@ void decompression(uint8_t *tab_entree, int taille){
 		}
 
 		for(int i = 0; i < tailleW2; i++) {
-			// printf("%c", w2[i]);
+			//printf("%c", w2[i]);
 			fputc(w2[i], f);
 		}
 
@@ -114,8 +120,8 @@ void decompression(uint8_t *tab_entree, int taille){
 		CodeVersChaine(i1,w1);
 	}
 
+	fputc('\n',f);
+
 	fclose(f);
 
 }
-
-		
