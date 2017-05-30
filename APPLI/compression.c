@@ -11,6 +11,10 @@
 
 #define NBBITDEPART 9
 
+void mark(){
+
+}
+
 /**
 * @fn void concat(char *w, int tailleW, char *a,char *out)
 * @brief Fonction permettant de concatener une chaine de caractère et un caractère. Ce dernier doit être contenu dans un tableau à 1 case.
@@ -35,11 +39,11 @@ void concat(char *w, int tailleW, char *a,char *out)
 * @param[in] input Tableau de caractère contenant la totalité de l'information contenue dans le fichier à compresser.
 * @param[in] taille Entier contant la taille du tableau input.
 */
-void codage(char *input, int taille)
+void codage(uint8_t *input, int taille)
 {
-	char *w;
-	char *wa;
-	char a[1];
+	uint8_t *w;
+	uint8_t *wa;
+	uint8_t a[1];
 	int i, tailleW = 1, k = 0;
 	int code;
 	initialiser();//ok
@@ -48,16 +52,19 @@ void codage(char *input, int taille)
 	w[0] = input[0];
 	for(i = 1 ; i < taille ; i++)
 	{
+		mark();
 
 		a[0] = input[i];
 
-		wa = malloc((tailleW+1)*sizeof(char));
+		//printf("a[0] = %c\n",a[0]);
+
+		wa = malloc((tailleW+1)*sizeof(uint8_t));
 		concat(w,tailleW,a,wa);
 
 		if(SequenceVersCode(wa,tailleW+1) != -1)
 		{
 			tailleW++;
-			w = malloc(tailleW*sizeof(char));
+			w = malloc(tailleW*sizeof(uint8_t));
 			for(int j = 0; j < tailleW; j++) w[j] = wa[j];
 		}
 		else
@@ -69,7 +76,7 @@ void codage(char *input, int taille)
 			Inserer(SequenceVersCode(w,tailleW),SequenceVersCode(a,1));
 			tailleW = 1;
 
-			w = malloc(tailleW*sizeof(char));
+			w = malloc(tailleW*sizeof(uint8_t));
 			w[0] = a[0];
 			k++;
 		}

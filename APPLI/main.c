@@ -25,8 +25,8 @@ int main(int argc, char *argv[]){
 	int tmp;
 	FILE *f = NULL;
 	int i = 0, tailleInput;
-	char c;
-	char *input;
+	uint8_t c;
+	uint8_t *input;
 	int *inputZip;
 
 	if(argc != 3){
@@ -74,6 +74,10 @@ int main(int argc, char *argv[]){
 
 				codage(input,tailleInput);
 
+				/*printf("Dico :\n");
+				dico_print_small();
+				printf("----------------------\n");*/
+
 				break;
 
 			case 'd':
@@ -109,6 +113,9 @@ int main(int argc, char *argv[]){
 
 				decompression(inputZip,tailleInput);
 
+				/*printf("Dictionnaire : \n");
+				dico_print_small();
+				printf("---------------\n");*/
 				break;
 
 			default:

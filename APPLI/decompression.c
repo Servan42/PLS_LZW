@@ -8,10 +8,6 @@
 
 #define NBBITDEPART 9
 
-void MARK(){
-
-}
-
 void decompression(int *tab, int lg){
 	int i1, i2, k = 0, tailleW1 = 1, tailleW2;
 	uint8_t *w1;
@@ -30,7 +26,7 @@ void decompression(int *tab, int lg){
 	w1[0] = a[0];
 	printf("%c", w1[0]);
 
-	while(k < lg)
+	while((k < lg - 1)&&(i2!=256))
 	{
 		i2 = 0;
 		i2 = tab[k];

@@ -1,3 +1,0 @@
-Syntaxe : 
-	./lzw -c fichier_a_compresser
-	./lzw -d fichier_a_decompresser

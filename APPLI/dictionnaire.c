@@ -35,8 +35,8 @@ Code Inserer(Code prefixe, Code mono)
 	ind_dico++;
 
 	/* Bornes du dico */
-	if(ind_dico == (1 << 16)-10){
-		printf("Je réinitialise\n");
+	if(ind_dico>=MAX){
+		//printf("\n\nOULOULOU\n\n");
 		int longueur = dico[prefixe].longueur + dico[mono].longueur;
 		char *tab = malloc((dico[prefixe].longueur + 1)*sizeof(char));
 		for(i = 0; i < dico[prefixe].longueur; i++)

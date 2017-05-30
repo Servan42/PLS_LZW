@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 
-#define MAX 65535
+#define MAX 4096
 
 typedef int Code;
 
